@@ -34,7 +34,9 @@ game_loop = True
 #pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
 #x_vel = 0.5
+#extra coisa
 
+#coisa
 #Esse inicio eu adquiri da documentacao do pygame, e o render loop principal
 #https://www.pygame.org/docs/
 coisa1 = objeto(5, 0.5, 0, screen.get_width() / 2, screen.get_height() / 2)
