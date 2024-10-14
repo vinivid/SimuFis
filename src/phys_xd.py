@@ -1,11 +1,11 @@
 import numpy
 import pygame
-from .electric_objs import electric_particle
+from .electric_objs import MovableElectricParticle
 
-class phys_xd:
+class PhysXD:
     def __init__ (self) -> None:
         self.electric_paricles = []
         self.electro_static_objs = []
 
-    def add_electric_particle(self, particle : electric_particle) -> None:
+    def add_electric_particle(self, particle : MovableElectricParticle) -> None:
         self.paricles.append(particle)
