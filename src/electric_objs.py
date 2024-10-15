@@ -9,7 +9,6 @@ class Charge(Enum) :
 class ElectricParticle:
     #Inicializa um objeto particle com a massa dada, posição inicial e velocidade inicial (ambas como lista) raio e cor dados
     #É obrigatorio se colocar uma posição inicial
-    #Caso seja desejado que não tenha velocidade inicial é necessario passar uma lista de zeros
     def __init__(self, mass : float, 
                  ini_pos : list, 
                  draw_radius : float, 
@@ -34,27 +33,43 @@ class ElectricParticle:
 
 class MovableElectricParticle(ElectricParticle):
     def __init__ (self, mass : float, 
-                 ini_pos : list, 
-                 ini_vel : list,
+                 ini_pos : list, ini_vel : list,
                  draw_radius : float, 
                  charge : Charge, q : float,
                  ) -> None:
 
         ElectricParticle.__init__(mass, ini_pos, draw_radius, charge, q)
-
-        self.ini_vel = ini_vel
+        self.ini_vel = numpy.array(ini_vel)
 
     def update(self, accel : numpy.ndarray) :
         self.ini_vel = numpy.add(self.ini_vel, accel)
-        self.ini_pos = numpy.add(self.ini_vel, self.ini_pos)
+        self.particle.pos = numpy.add(self.ini_vel, self.particle.pos)
 
-#Esse tipo de particula eletrica 
+#É uma particula elétrica com um campo que se mantem completamente estatica
 class FieldElectricParticle(ElectricParticle):
     def __init__ (self, mass : float, 
                  ini_pos : list, 
-                 draw_radius : float,
-                 
+                 draw_radius : float, max_pull_radius : float,
                  charge : Charge, q : float
                  ) -> None:
         
-        ElectricParticle.__init__(mass, ini_pos, draw_radius, charge)
+        ElectricParticle.__init__(mass, ini_pos, draw_radius, charge, q)
+        self.max_pull_radius = max_pull_radius
+
+        #TODO: adicionar uma função para dar outiline no campo eletrico 
+    
+
+#Provavelmente não sera usado mais é uma particuala que possue um campo e se move
+class MovableFieldElectricParticle(FieldElectricParticle):
+        def __init__ (self, mass : float, 
+                 ini_pos : list, ini_vel : float,
+                 draw_radius : float, max_pull_radius : float,
+                 charge : Charge, q : float
+                 ) -> None:
+
+            FieldElectricParticle.__init__(mass, ini_pos, draw_radius, max_pull_radius, charge, q)
+            self.ini_vel = numpy.array(ini_vel) 
+
+        def update(self, accel : numpy.ndarray) :
+            self.ini_vel = numpy.add(self.ini_vel, accel)
+            self.particle.pos = numpy.add(self.ini_vel, self.particle.pos)
