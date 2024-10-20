@@ -2,9 +2,9 @@ import numpy
 
 acdb = list[list[int, float, numpy.ndarray]]()
 
-acdb.append(())
-acdb[0][0] = 2
-acdb[0][1] = 2.5
-acdb[0][2] = numpy.array([1, 2, 3])
+ascoria = [3.5, 2.5]
+arr2 = numpy.array([2.5 , 3.5])
 
-print(acdb[0][0])
+acdb.append( (4, 0.5, numpy.array(ascoria)))
+
+print( arr2 + acdb[0][2])

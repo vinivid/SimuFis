@@ -6,3 +6,5 @@
 .\venv 
 \venv 
 \.venv
+tst.py
+./tst.py
