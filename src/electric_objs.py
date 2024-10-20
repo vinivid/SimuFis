@@ -37,6 +37,7 @@ class ElectroStaticObj:
     def __init__(self, mass : float, radius_of_effect : float, 
                  charge : Charge, Q : float,
                  pos : list, draw_radius : float) -> None:
+        
         self.mass = mass 
         self.radius_of_effect = radius_of_effect
         self.charge = charge
