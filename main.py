@@ -19,7 +19,6 @@ while game_loop:
 
     screen.fill("gray")
 
-
     #O flip muda o buffer da tela 
     pygame.display.flip()
 

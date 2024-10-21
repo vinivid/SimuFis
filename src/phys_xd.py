@@ -1,15 +1,22 @@
 import numpy
 import pygame
-from .electric_objs import *
+from .objs import *
 
 class PhysXD:
     #O tamanho do passo para se utilizar no método de Euler para integrais numéricas
     dt = 0.01
-    movable_electric_particle = list[ElectricParticle]()
-    static_electric_particle = list[ElectricParticle]()
+    planets = list[list[Planet, int]]()
 
     #Checa se o objeto a esta contido na caixa criada pelo objeto b
     #TODO: Fazer com que seja uma aproximação de um circulo em que começa a ter força pq agora é só um quadrado
+    def add_planet (self, planet : Planet
+                    ) -> None:
+        
+        if not self.planets:
+            self.planets.append([planet, 0])
+        else:
+            self.planets.append([planet, self.planets[-1][1] + 1])
+
     def __is_inside_radius(self, pos_obj_a : numpy.ndarray, center_obj_b : numpy.ndarray, 
                            radius_obj_b : float
                            ) -> bool:
@@ -21,9 +28,19 @@ class PhysXD:
             return True
         else:
             return False
-    
-    def __update_force_particle(self, particle : ElectricParticle) -> numpy.ndarray:
         
+    def __update_force(self, planet : Planet
+                       ) -> numpy.ndarray:
+        
+        acumulate_accel = numpy.zeros(2)
+
+        for plt in self.planets:
+            if plt[1] == planet[1] :
+                continue
+            
+            if self.__is_inside_radius(planet.body.pos, plt[0].body.pos, plt[0].field_radius) :
+                
+
     #O que esta escrito abaixo vem do método de integrar de Verlet
     #O metódo de Stormer-Verlet para calcular velocidades é um método adequado para esse projeto por ele ser o Thanos das tecnicas de integrar a velocidade
     #O que mais importa pra nós é q ele é facilmente implementavel, rapido, e numericamente estavel. É em essência o unico metódo sano q descreve nósso sistema
@@ -34,11 +51,12 @@ class PhysXD:
     #TODO: Explicar esse algoritimo e a teoria no relatório
     def __velocity_verlet(self
                           ) -> None:
-        for m_particle in self.movable_electric_particle :
-            m_particle.body.pos = m_particle.body.pos + m_particle.body.vel * self.dt + m_particle.body.accel * (self.dt**2 * 0.5)
-            n_accel : numpy.ndarray = self.__update_force(m_particle)
-            m_particle.body.vel = m_particle.body.vel + (m_particle.body.accel + n_accel) * (self.dt*0.5)
-            m_particle.body.accel = n_accel
+        
+        for planet in self.planets :
+            planet.body.pos = planet.body.pos + planet.body.vel * self.dt + planet.body.accel * (self.dt**2 * 0.5)
+            n_accel : numpy.ndarray = self.__update_force(planet)
+            planet.body.vel = planet.body.vel + (planet.body.accel + n_accel) * (self.dt*0.5)
+            planet.body.accel = n_accel
 
     def update(self) -> None:
         self.__velocity_verlet()
