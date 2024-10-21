@@ -40,6 +40,7 @@ class PhysXD:
             
             if self.__is_inside_radius(planet.body.pos, plt[0].body.pos, plt[0].field_radius) :
                 
+                
 
     #O que esta escrito abaixo vem do método de integrar de Verlet
     #O metódo de Stormer-Verlet para calcular velocidades é um método adequado para esse projeto por ele ser o Thanos das tecnicas de integrar a velocidade
