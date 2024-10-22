@@ -8,19 +8,13 @@ class PhysXD:
     dt = 0.01
     planets = list[list[Planet, int]]()
 
-    #Checa se o objeto a esta contido na caixa criada pelo objeto b
-    #TODO: Fazer com que seja uma aproximação de um circulo em que começa a ter força pq agora é só um quadrado
-    def add_planet (self, planet : Planet
-                    ) -> None:
-        
-        if not self.planets:
-            self.planets.append([planet, 0])
-        else:
-            self.planets.append([planet, self.planets[-1][1] + 1])
-        
+    #TODO: Fazer a verificação de colisões
+    
+    #Calcula cada uma das forças que atuam em um corpo especifico colocando o referencial no outro objeto para que não tenhamos que negar o vetor
     def __update_force(self, planet : list[Planet, int]
                        ) -> numpy.ndarray:
         
+        #Acumular as forças que são calculadas para representar a resultante
         acumulate_forces = numpy.zeros(2)
 
         for plt in self.planets:
@@ -33,11 +27,10 @@ class PhysXD:
             x_projection = force_norm * ( (plt[0].body.pos[0] - planet[0].body.pos[0] )/absolute_distance)
             y_projection = force_norm * ( (plt[0].body.pos[1] - planet[0].body.pos[1] )/absolute_distance)
 
-            print("{} {}".format(x_projection, y_projection))
-
             acumulate_forces[0] += x_projection
             acumulate_forces[1] += y_projection
         
+        #segunda lei de newton
         return acumulate_forces/planet[0].body.mass
 
     #O que esta escrito abaixo vem do método de integrar de Verlet
