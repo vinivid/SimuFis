@@ -1,6 +1,7 @@
 import numpy
 import pygame
 from .objs import *
+from scipy import constants
 
 class PhysXD:
     #O tamanho do passo para se utilizar no método de Euler para integrais numéricas
@@ -20,7 +21,7 @@ class PhysXD:
     def __is_inside_radius(self, pos_obj_a : numpy.ndarray, center_obj_b : numpy.ndarray, 
                            radius_obj_b : float
                            ) -> bool:
-        
+
         if_range_x = bool((pos_obj_a[0] >= (center_obj_b[0] - radius_obj_b)) and (pos_obj_a[0] <= (center_obj_b[0]) + radius_obj_b))
         if_range_y = bool((pos_obj_a[1] >= (center_obj_b[1] - radius_obj_b)) and (pos_obj_a[1] <= (center_obj_b[1]) + radius_obj_b))
         
@@ -29,7 +30,7 @@ class PhysXD:
         else:
             return False
         
-    def __update_force(self, planet : Planet
+    def __update_force(self, planet : list[Planet, int]
                        ) -> numpy.ndarray:
         
         acumulate_accel = numpy.zeros(2)
@@ -39,8 +40,8 @@ class PhysXD:
                 continue
             
             if self.__is_inside_radius(planet.body.pos, plt[0].body.pos, plt[0].field_radius) :
-                
-                
+                absolute_distance = numpy.linalg.norm(plt[0].body.pos - planet[0].body.pos)
+                force_norm = (constants.G * planet[0].body.mass * plt[0].body.mass) / absolute_distance ** 2
 
     #O que esta escrito abaixo vem do método de integrar de Verlet
     #O metódo de Stormer-Verlet para calcular velocidades é um método adequado para esse projeto por ele ser o Thanos das tecnicas de integrar a velocidade
