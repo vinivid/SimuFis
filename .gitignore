@@ -8,3 +8,4 @@
 \.venv
 tst.py
 ./tst.py
+__pycache__/
