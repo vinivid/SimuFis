@@ -15,14 +15,10 @@ class Renderer:
         self.planets.append(planet)
 
     def render(self):
-
-
         self.screen.fill("gray")
 
         for planet in self.planets:
-            to_screen_coordinate = planet.body.pos/(10 ** 3)
-            print(to_screen_coordinate.astype(float)[1])
-            pygame.draw.circle(self.screen, "red", [to_screen_coordinate.astype(float)[0], to_screen_coordinate.astype(float)[1]], planet.planet_radius)
+            pygame.draw.circle(self.screen, planet.color, planet.body.pos/(10 ** 3), planet.planet_radius)
             
         pygame.display.flip()
         

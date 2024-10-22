@@ -30,8 +30,10 @@ class PhysXD:
             absolute_distance = numpy.linalg.norm(plt[0].body.pos - planet[0].body.pos)
             force_norm = (constants.G * planet[0].body.mass * plt[0].body.mass) / absolute_distance ** 2
 
-            x_projection = -1 * force_norm * ( (plt[0].body.pos[0] - planet[0].body.pos[0] )/absolute_distance)
-            y_projection = -1 * force_norm * ( (plt[0].body.pos[1] - planet[0].body.pos[1] )/absolute_distance)
+            x_projection = force_norm * ( (plt[0].body.pos[0] - planet[0].body.pos[0] )/absolute_distance)
+            y_projection = force_norm * ( (plt[0].body.pos[1] - planet[0].body.pos[1] )/absolute_distance)
+
+            print("{} {}".format(x_projection, y_projection))
 
             acumulate_forces[0] += x_projection
             acumulate_forces[1] += y_projection

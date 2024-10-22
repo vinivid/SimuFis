@@ -6,9 +6,12 @@ import engine.phys_xd as phys
 pygame.init()
 
 phys_xd = phys.PhysXD()
-planet1 = phys.Planet(8000, [400, 500], [100000, 0], [0, 0], 500.0, 5.0, [255, 0, 0, 255])
+planet1 = phys.Planet(800000, [400, 500], [10000, 0], [0, 0], 500.0, 5.0, [255, 0, 0, 255])
 phys_xd.add_planet(planet1)
-render = renderer.Renderer(1280, 720, [planet1])
+planet2 = phys.Planet(800000000000000000000, [600, 400], [0, 0], [0, 0], 500.0, 5.0, [0, 0, 255, 255])
+phys_xd.add_planet(planet2)
+render = renderer.Renderer(1280, 720, [planet1, planet2])
+
 
 clock = pygame.time.Clock()
 
