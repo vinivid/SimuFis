@@ -17,31 +17,26 @@ class PhysXD:
             self.planets.append([planet, 0])
         else:
             self.planets.append([planet, self.planets[-1][1] + 1])
-
-    def __is_inside_radius(self, pos_obj_a : numpy.ndarray, center_obj_b : numpy.ndarray, 
-                           radius_obj_b : float
-                           ) -> bool:
-
-        if_range_x = bool((pos_obj_a[0] >= (center_obj_b[0] - radius_obj_b)) and (pos_obj_a[0] <= (center_obj_b[0]) + radius_obj_b))
-        if_range_y = bool((pos_obj_a[1] >= (center_obj_b[1] - radius_obj_b)) and (pos_obj_a[1] <= (center_obj_b[1]) + radius_obj_b))
-        
-        if if_range_x and if_range_y:
-            return True
-        else:
-            return False
         
     def __update_force(self, planet : list[Planet, int]
                        ) -> numpy.ndarray:
         
-        acumulate_accel = numpy.zeros(2)
+        acumulate_forces = numpy.zeros(2)
 
         for plt in self.planets:
             if plt[1] == planet[1] :
                 continue
-            
-            if self.__is_inside_radius(planet.body.pos, plt[0].body.pos, plt[0].field_radius) :
-                absolute_distance = numpy.linalg.norm(plt[0].body.pos - planet[0].body.pos)
-                force_norm = (constants.G * planet[0].body.mass * plt[0].body.mass) / absolute_distance ** 2
+
+            absolute_distance = numpy.linalg.norm(plt[0].body.pos - planet[0].body.pos)
+            force_norm = (constants.G * planet[0].body.mass * plt[0].body.mass) / absolute_distance ** 2
+
+            x_projection = -1 * force_norm * ( (plt[0].body.pos[0] - planet[0].body.pos[0] )/absolute_distance)
+            y_projection = -1 * force_norm * ( (plt[0].body.pos[1] - planet[0].body.pos[1] )/absolute_distance)
+
+            acumulate_forces[0] += x_projection
+            acumulate_forces[1] += y_projection
+        
+        return acumulate_forces/planet[0].body.mass
 
     #O que esta escrito abaixo vem do método de integrar de Verlet
     #O metódo de Stormer-Verlet para calcular velocidades é um método adequado para esse projeto por ele ser o Thanos das tecnicas de integrar a velocidade
@@ -55,10 +50,10 @@ class PhysXD:
                           ) -> None:
         
         for planet in self.planets :
-            planet.body.pos = planet.body.pos + planet.body.vel * self.dt + planet.body.accel * (self.dt**2 * 0.5)
+            planet[0].body.pos = planet[0].body.pos + planet[0].body.vel * self.dt + planet[0].body.accel * (self.dt**2 * 0.5)
             n_accel : numpy.ndarray = self.__update_force(planet)
-            planet.body.vel = planet.body.vel + (planet.body.accel + n_accel) * (self.dt*0.5)
-            planet.body.accel = n_accel
+            planet[0].body.vel = planet[0].body.vel + (planet[0].body.accel + n_accel) * (self.dt*0.5)
+            planet[0].body.accel = n_accel
 
     def update(self) -> None:
         self.__velocity_verlet()
