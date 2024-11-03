@@ -28,7 +28,7 @@ while game_loop:
     engine.render()
 
     #O flip muda o buffer da tela
-    clock.tick(60)
+    clock.tick(120)
     loops += 1
 
 pygame.quit()

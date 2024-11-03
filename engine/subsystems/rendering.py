@@ -3,6 +3,8 @@ from .objs import *
 
 class Renderer:
     planets = list[list[Planet, int]]()
+    #É a lista que representa a linha que segue o planeta
+    trailing_line = list[float]
 
     def __init__(self, screen_heigth : int, screen_width : int,
                  ) -> None:
