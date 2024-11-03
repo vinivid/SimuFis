@@ -16,7 +16,6 @@ clock = pygame.time.Clock()
 game_loop = True
 
 #o lop conta o prgresso no tempo
-loops = 0
 
 while game_loop:
 
@@ -27,8 +26,6 @@ while game_loop:
     engine.update_physics()
     engine.render()
 
-    #O flip muda o buffer da tela
     clock.tick(120)
-    loops += 1
 
 pygame.quit()
