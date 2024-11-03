@@ -7,8 +7,8 @@ pygame.init()
 
 engine = GameEngine(1280, 720)
 #O primeiro planeta vai ser tratado como principal
-planet1 = Planet(0.0000000008, [400, 500], [10000, 0], [0, 0], 500.0, 5.0, [255, 0, 0, 255])
-planet2 = Planet(800000000000000000000, [600, 400], [0, 0], [0, 0], 500.0, 5.0, [0, 0, 255, 255])
+planet1 = Planet(80, [400, 500], [10000, 0], [0, 0], 500.0, 5.0, [255, 0, 0, 255])
+planet2 = Planet(8*10**20, [600, 400], [0, 0], [0, 0], 500.0, 5.0, [0, 0, 255, 255])
 engine.add_planet(planet1)
 engine.add_planet(planet2)
 
@@ -24,6 +24,6 @@ while game_loop:
     engine.update_physics()
     engine.render()
 
-    clock.tick(120)
+    clock.tick(400)
 
 pygame.quit()
