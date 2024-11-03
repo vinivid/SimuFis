@@ -15,9 +15,10 @@ class GameEngine:
             self.physXD.planets.append([planet, 0])
             self.render_sistem.planets.append([planet, 0])
         else:
-            self.planets.append([planet, self.planets[-1][1] + 1])
-            self.physXD.planets.append([planet, self.planets[-1][1] + 1])
-            self.render_sistem.planets.append([planet, self.planets[-1][1] + 1])
+            next_id_value = self.planets[-1][1] + 1
+            self.planets.append([planet, next_id_value])
+            self.physXD.planets.append([planet, next_id_value])
+            self.render_sistem.planets.append([planet, next_id_value])
     
     def update_physics(self):
         self.physXD.update()
