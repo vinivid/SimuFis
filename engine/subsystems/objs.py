@@ -17,16 +17,12 @@ class Body:
         self.accel = numpy.array(ini_accel)
 
 @dataclass
-#TODO: implementar texturas
-#A massa é dada em kg e a posição é dada em km
 class Planet:
     def __init__(self, mass : float,
                  ini_pos : list, ini_vel : list, ini_accel : list,
-                 field_radius : float,
                  planet_radius : float, color : list
                  ) -> None:
         
         self.body = Body(mass * (10 ** 3), (ini_pos[0] * (10 ** 3), ini_pos[1] * (10 ** 3)), ini_vel, ini_accel)
-        self.field_radius = field_radius
         self.planet_radius = planet_radius
         self.color = color

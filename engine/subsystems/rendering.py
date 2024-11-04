@@ -1,4 +1,5 @@
 import pygame
+import pygame.freetype
 from collections import deque
 from .objs import *
 
@@ -14,10 +15,37 @@ class Renderer:
     #Por enquanto a cada 240 loops armazena um novo ponto
     qtt_loops = int()
 
+    #Constantes que representam se deve desenhar a seta na posição da UI ou no planeta principal
+    DRAW_ARROW_ON_UI = 0
+    DRAW_ARROW_ON_PLAYER = 1
+
     def __init__(self, screen_heigth : int, screen_width : int,
                  ) -> None:
         
         self.screen = pygame.display.set_mode( (screen_heigth, screen_width) )
+        self.font = pygame.freetype.Font('./engine/fonts/Roboto-Regular.ttf', 12)
+    
+    #Desnha o vetor direção do planeta
+    def draw_accel_vector(self) -> None:
+        main_planet = self.planets[0][0] 
+
+        accel_norm = numpy.linalg.norm(main_planet.body.accel)
+        point_to = main_planet.body.accel/accel_norm
+
+            #Para que não fique uma linha gigantesca
+        if accel_norm > 2000:
+            pygame.draw.line(self.screen, [255, 255, 255, 255], main_planet.body.pos/(10**3), main_planet.body.pos/(10**3) + (point_to * 20), 2)
+        else:
+            pygame.draw.line(self.screen, [255, 255, 255, 255], main_planet.body.pos/(10**3), main_planet.body.pos/(10**3) + (point_to * (accel_norm/100)), 2)
+    
+    #Renderizar texto faz o jogo rodar em muitos menos frames mas se quiser usar eu acho q fica daora
+    def draw_main_planet_stats(self):
+        main_planet = self.planets[0][0]
+
+        self.font.render_to(self.screen, (10, 10), f'Velocidade: {numpy.linalg.norm(main_planet.body.vel)/(10**3):.4f}', [255, 255, 255])
+        self.font.render_to(self.screen, (140, 10), f'km/s', [255, 255, 255])
+        self.font.render_to(self.screen, (10, 25), f'Aceleração: {numpy.linalg.norm(main_planet.body.accel)/(10**3):.4f}', [255, 255, 255])
+        self.font.render_to(self.screen, (140, 25), f'km/s^2', [255, 255, 255])
 
     def render(self):
         self.screen.fill("black")
