@@ -25,6 +25,6 @@ while game_loop:
     engine.render()
 
     clock.tick(1000)
-    print(clock.get_fps())
+    #print(clock.get_fps())
 
 pygame.quit()
