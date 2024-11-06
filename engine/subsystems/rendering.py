@@ -3,11 +3,16 @@ import pygame.freetype
 from collections import deque
 from .objs import *
 
-class Renderer:
-    previous_point_radius = 1
+class Renderer:    
+    #É uma lista de planetas e id de cada um
+    #O planeta de index/id 0 é o planeta principal
     planets = list[list[Planet, int]]()
-    #É a lista que representa a linha que segue o planeta
+
+    #É um deque que representa a linha que segue o planeta
     trailing_line = deque[numpy.ndarray]()
+
+    #É o raio que sera usado para renderizar os pontos em que o planeta zero esteve previamente
+    previous_point_radius = 1
 
     #É uma lista que ira armazenar um ponto previo que o planeta esteve, esse ponto é dado após uma certa quantidade de render loops
     previus_points = list[numpy.ndarray]()
