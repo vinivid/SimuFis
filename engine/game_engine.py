@@ -46,26 +46,31 @@ class GameEngine:
 
     #Transforma os objetos que foi colocados até agora em um nível.
     def to_level(self, level_number : int) -> None:
-        if level_number > 5 or level_number < 1 :
-            print('O número do nível precisa ser entre 1 e 5')
-
         with open(f'./engine/levels/{level_number}.lv', 'w') as lv:
             for planet in self.planets:
+                #Simplesmente escreve todos os dados do planeta do nível que vc tinha criado
                 lv.write(f'planet {planet[0].body.mass/10**3} {planet[0].body.pos[0]/10**3} {planet[0].body.pos[1]/10**3} {planet[0].body.vel[0]} {planet[0].body.vel[1]} {planet[0].body.accel[0]} {planet[0].body.accel[1]} {planet[0].planet_radius} {planet[0].color[0]} {planet[0].color[1]} {planet[0].color[2]} {planet[0].color[3]}\n')
+
+            for rect in self.rect_objs:
+                #Escreve todos os dados do retangulo em um arquivo
+                lv.write(f'rect {rect.width} {rect.height} {rect.pos[0]} {rect.pos[1]} {rect.type} {rect.color[0]} {rect.color[1]} {rect.color[2]} {rect.color[3]}')
+
 
     #Carrega todos os objetos contidos em um nivel arquivo de nível
     #deletando os que estavam presentes no momento
     def load_level(self, level_number : int) -> None:
         #É necessario passar os dados tirando o identificador de planeta/objeto
-        def read_planet(data : list) -> None:
-            #transforma a lista de strings para float
-            planet_to_add = Planet(float(data[0]), [float(data[1]), float(data[2])], [float(data[3]), float(data[4])], [float(data[5]), float(data[6])], float(data[7]), [int(data[8], 10), int(data[9], 10), int(data[10], 10), int(data[11], 10)])
-            self.add_planet(planet_to_add)
 
         with open(f'./engine/levels/{level_number}.lv', 'r') as lv:
             for line in lv:
-                split_line = line.split()
+                data = line.split()
 
-                if split_line[0] == 'planet':
-                    read_planet(split_line[1:])
+                if data[0] == 'planet':
+                    #Coloca manualmente os dados do planeta e adiciona ele
+                    planet_to_add = Planet(float(data[1]), [float(data[2]), float(data[3])], [float(data[4]), float(data[5])], [float(data[6]), float(data[7])], float(data[8]), [int(data[9], 10), int(data[10], 10), int(data[11], 10), int(data[12], 10)])
+                    self.add_planet(planet_to_add)
+
+                else:
+                    rect_to_add = RectObstacle(float(data[1]), float(data[2]), [float(data[3]), float(data[4])], int(data[5], 10), [int(data[6], 10), int(data[7], 10), int(data[8],10), int(data[9],10)])
+                    self.add_rect_obstacle(rect_to_add)
                 

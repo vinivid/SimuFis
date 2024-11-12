@@ -39,7 +39,7 @@ class Planet:
 
 @dataclass
 class RectObstacle:
-    def __init__(self, height : int, width : int,
+    def __init__(self, width : float, height : float,
                  pos : list, 
                  rect_type : int,
                  color : list,
