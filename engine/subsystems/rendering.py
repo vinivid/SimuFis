@@ -2,11 +2,13 @@ import pygame
 import pygame.freetype
 from collections import deque
 from .objs import *
+from ..game_engine import GameState
 
 class Renderer:    
     #É uma lista de planetas e id de cada um
     #O planeta de index/id 0 é o planeta principal
     planets = list[list[Planet, int]]()
+    rect_objs = list[RectObstacle]()
 
     #É um deque que representa a linha que segue o planeta
     trailing_line = deque[numpy.ndarray]()
@@ -31,7 +33,7 @@ class Renderer:
     #Desenha uma flecha com base numa posição inicial e a direção q ela vai apontar
     #A direção q é o direction vector tem de ser um vetor de norma 1
     #A arrow strenght é a escala q vetor da posição vai ser desenhado
-    def draw_arrow(self, arrow_color : list, ini_pos : numpy.ndarray, direction_vector: numpy.ndarray, arrow_width : int, arrow_strenght : float):
+    def __draw_arrow(self, arrow_color : list, ini_pos : numpy.ndarray, direction_vector: numpy.ndarray, arrow_width : int, arrow_strenght : float):
         ending_pos = ini_pos + (direction_vector * arrow_strenght)
         pygame.draw.line(self.screen, arrow_color, ini_pos, ending_pos, arrow_width)
         #Desenhando o triangulo
@@ -48,7 +50,7 @@ class Renderer:
         pygame.draw.polygon(self.screen, arrow_color, [basis_vector1, basis_vector2, triangle_height])
 
     #Desnha o vetor direção do planeta
-    def draw_accel_vector(self) -> None:
+    def __draw_accel_vector(self) -> None:
         main_planet = self.planets[0][0] 
 
         accel_norm = numpy.linalg.norm(main_planet.body.accel)
@@ -56,12 +58,12 @@ class Renderer:
 
             #Para que não fique uma linha gigantesca
         if accel_norm > 2000:
-            self.draw_arrow([255, 255, 255, 255], main_planet.body.pos/(10**3), point_to, 2, 20)
+            self.__draw_arrow([255, 255, 255, 255], main_planet.body.pos/(10**3), point_to, 2, 20)
         else:
-            self.draw_arrow([255, 255, 255, 255], main_planet.body.pos/(10**3), point_to, 2, accel_norm/100)
+            self.__draw_arrow([255, 255, 255, 255], main_planet.body.pos/(10**3), point_to, 2, accel_norm/100)
     
     #Renderizar texto faz o jogo rodar em muitos menos frames protanto eu recomendo não renderizar texto enquanto o jogo ta rodando
-    def draw_main_planet_stats(self):
+    def __draw_main_planet_stats(self):
         main_planet = self.planets[0][0]
 
         self.font.render_to(self.screen, (10, 10), f'Velocidade: {numpy.linalg.norm(main_planet.body.vel)/(10**3):.4f}', [255, 255, 255])
@@ -69,7 +71,7 @@ class Renderer:
         self.font.render_to(self.screen, (10, 25), f'Aceleração: {numpy.linalg.norm(main_planet.body.accel)/(10**3):.4f}', [255, 255, 255])
         self.font.render_to(self.screen, (140, 25), f'km/s^2', [255, 255, 255])
 
-    def render(self):
+    def __draw_simulate(self):
         self.screen.fill("black")
 
         if self.qtt_loops == 240:
@@ -79,6 +81,7 @@ class Renderer:
         #Sendo o primeiro planeta o planeta pricipal armazena a posição dele
         self.trailing_line.append(self.planets[0][0].body.pos/(10 ** 3))
 
+        self.__draw_rec_obj()
         #Guarda no deque todos os pontos atenriores até um certo número
         if len(self.trailing_line) > 70:
             self.trailing_line.popleft()
@@ -94,8 +97,18 @@ class Renderer:
             pygame.draw.circle(self.screen, self.planets[0][0].color, self.trailing_line[i], self.planets[0][0].planet_radius * (i + 1)/100)
         
         #Incrementa a quantidade de loops de renderização feitos e muda o buffer de renderização
-        self.draw_accel_vector()
+        self.__draw_accel_vector()
         #self.draw_main_planet_stats()
         self.qtt_loops += 1
         pygame.display.flip()
-        
+
+    def __draw_rec_obj(self) -> None:
+        for rect in self.rect_objs:
+            self.screen.blit(rect.surface, rect.pos)            
+
+    def render(self, state : GameState):
+        match state.value:
+            case GameState.SIMULATE.value:
+                self.__draw_simulate()
+            case _:
+                print(f"{{'\033[0;31m'}}ERROR::INVALID GAME STATE FOR RENDERING")

@@ -7,9 +7,20 @@ class PhysXD:
     #O tamanho do passo para se utilizar no método de Euler para integrais numéricas
     dt = 0.01
     planets = list[list[Planet, int]]()
+    rect_objs = list[RectObstacle]()
 
     #TODO: Fazer a verificação de colisões
-    
+    def __colision_detect(self, planet : list[Planet, int]) -> GameState:
+        if planet[1] == 0:
+            for rect in self.rect_objs:
+                if_collide = rect.check_collision(self.planets[0][0])
+
+                if if_collide == GameState.GAME_WIN or if_collide == GameState.GAME_OVER:
+                    print(if_collide.value)
+                    return if_collide
+        
+        return GameState.NO_CHANGE
+            
     #Calcula cada uma das forças que atuam em um corpo especifico colocando o referencial no outro objeto para que não tenhamos que negar o vetor
     def __update_force(self, planet : list[Planet, int]
                        ) -> numpy.ndarray:
@@ -46,6 +57,7 @@ class PhysXD:
         
         for planet in self.planets :
             planet[0].body.pos = planet[0].body.pos + planet[0].body.vel * self.dt + planet[0].body.accel * (self.dt**2 * 0.5)
+            self.__colision_detect(planet)
             n_accel : numpy.ndarray = self.__update_force(planet)
             planet[0].body.vel = planet[0].body.vel + (planet[0].body.accel + n_accel) * (self.dt*0.5)
             planet[0].body.accel = n_accel
