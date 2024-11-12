@@ -34,15 +34,24 @@ class GameEngine:
         self.render_sistem.rect_objs.append(obstacle)
 
     #Muda as caracteristacas de um planeta
-    def change_planet_characteristics(self, planet_id : int, **kwargs) ->None :
+    def change_planet_characteristics(self, planet_id : int, **kwargs) -> None :
         if 'vel' in kwargs:
             self.planets[planet_id] = numpy.array(kwargs['vel'])
 
-    def update_physics(self):
+    def update_physics(self) -> None:
         self.physXD.update()
     
-    def render(self):
+    def render(self) -> None:
         self.render_sistem.render(GameState.SIMULATE)
+
+    #Deleta todos os objetos de todas os módulos da engine
+    def __delete_all_objs(self) -> None:
+        self.planets.clear()
+        self.physXD.planets.clear()
+        self.render_sistem.planets.clear()
+        self.rect_objs.clear()
+        self.physXD.rect_objs.clear()
+        self.render_sistem.rect_objs.clear()
 
     #Transforma os objetos que foi colocados até agora em um nível.
     def to_level(self, level_number : int) -> None:
@@ -59,9 +68,9 @@ class GameEngine:
     #Carrega todos os objetos contidos em um nivel arquivo de nível
     #deletando os que estavam presentes no momento
     def load_level(self, level_number : int) -> None:
-        #É necessario passar os dados tirando o identificador de planeta/objeto
-
+        self.__delete_all_objs()
         with open(f'./engine/levels/{level_number}.lv', 'r') as lv:
+            #Cada linha vai conter os dados de um planeta/rect em que a primeira palavra ira indicar se é um planeta ou um rect
             for line in lv:
                 data = line.split()
 
@@ -71,6 +80,7 @@ class GameEngine:
                     self.add_planet(planet_to_add)
 
                 else:
+                    #assim como o planeta coloca os dados manualmente no objeto de retangulo
                     rect_to_add = RectObstacle(float(data[1]), float(data[2]), [float(data[3]), float(data[4])], int(data[5], 10), [int(data[6], 10), int(data[7], 10), int(data[8],10), int(data[9],10)])
                     self.add_rect_obstacle(rect_to_add)
                 
