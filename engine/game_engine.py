@@ -15,6 +15,11 @@ class GameEngine:
         #Eu lockei essa resolução para que tudo que tudo mundo fazer fique padronizado e funcionando
         self.render_sistem = Renderer(1280, 720)
 
+        #É a variavel que representa se o jogo ainda esta rodando
+        self.game_running = True
+        self.current_game_state = GameState.MENU
+        self.clock = pygame.time.Clock()
+
     def add_planet(self, planet : Planet) -> None:
         if not self.planets:
             self.planets.append([planet, 0])
@@ -62,8 +67,7 @@ class GameEngine:
 
             for rect in self.rect_objs:
                 #Escreve todos os dados do retangulo em um arquivo
-                lv.write(f'rect {rect.width} {rect.height} {rect.pos[0]} {rect.pos[1]} {rect.type} {rect.color[0]} {rect.color[1]} {rect.color[2]} {rect.color[3]}')
-
+                lv.write(f'rect {rect.width} {rect.height} {rect.pos[0]} {rect.pos[1]} {rect.type} {rect.color[0]} {rect.color[1]} {rect.color[2]} {rect.color[3]}\n')
 
     #Carrega todos os objetos contidos em um nivel arquivo de nível
     #deletando os que estavam presentes no momento
@@ -83,4 +87,57 @@ class GameEngine:
                     #assim como o planeta coloca os dados manualmente no objeto de retangulo
                     rect_to_add = RectObstacle(float(data[1]), float(data[2]), [float(data[3]), float(data[4])], int(data[5], 10), [int(data[6], 10), int(data[7], 10), int(data[8],10), int(data[9],10)])
                     self.add_rect_obstacle(rect_to_add)
+    
+    def __check_rect_click(self, rect_pos : tuple, rect_width_height : tuple) -> bool:
+        mouse_pos = pygame.mouse.get_pos()
+
+        if((mouse_pos[1] >= rect_pos[1] and mouse_pos[1] <= rect_pos[1] + rect_width_height[1]) and (mouse_pos[0] >= rect_pos[0] and  mouse_pos[0] <= rect_pos[0] + rect_width_height[0])) and pygame.mouse.get_pressed()[0]:
+            return True
+        else: 
+            return False
+
+    def check_main_menu_click(self) -> int:
+        square_dimensions = (200, 200)
+        #É o espaço que tera entre cada uma das caixas, por exemplo a coordenata da caixa 2 sera a coordenada da caixa 1 mais
+        #Sua largura (200) e mais um espacinho entre elas que sera é 50
+        level_position_offset = 250
+        level_one_pos = (300, 300)
+        level_two_pos = (300 + level_position_offset, 300)
+        level_tree_pos = (300 + level_position_offset * 2, 300)
+
+        check_first_square  = self.__check_rect_click(level_one_pos, square_dimensions)
+        check_second_square = self.__check_rect_click(level_two_pos, square_dimensions)
+        check_third_square = self.__check_rect_click(level_tree_pos, square_dimensions)
+
+        if check_first_square:
+            return 1
+        elif check_second_square:
+            return 2
+        elif check_third_square:
+            return 3
+        else:
+            return -1
+        
+        
+    #Como o jogo é simples eu preferi colocar o game loop hardcodado dentro da engine, como provavelmente a gente n vai reutilizar ela
+    #Isso não sera um grande problema
+    def game_loop(self) -> None:
+        while self.game_loop:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.game_loop = False
+            
+            if self.current_game_state.value == GameState.MENU.value:
+                level_clicked = self.check_main_menu_click()
                 
+                if level_clicked != -1:
+                    self.current_game_state = GameState.SIMULATE
+                    self.load_level(level_clicked)
+            
+            if self.current_game_state.value == GameState.SIMULATE.value:
+                self.physXD.update()
+
+            self.render_sistem.render(self.current_game_state)
+            #self.clock.tick(1000)
+            #Se vc quiserer q ele printe of FPS descomente a linha seguinte
+            #print(clock.get_fps())

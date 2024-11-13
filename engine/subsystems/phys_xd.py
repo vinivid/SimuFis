@@ -16,7 +16,6 @@ class PhysXD:
                 if_collide = rect.check_collision(self.planets[0][0])
 
                 if if_collide == GameState.GAME_WIN or if_collide == GameState.GAME_OVER:
-                    print(if_collide.value)
                     return if_collide
         
         return GameState.NO_CHANGE

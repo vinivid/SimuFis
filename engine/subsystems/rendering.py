@@ -104,10 +104,30 @@ class Renderer:
 
     def __draw_rec_obj(self) -> None:
         for rect in self.rect_objs:
-            self.screen.blit(rect.surface, rect.pos)            
+            self.screen.blit(rect.surface, rect.pos)
+
+    def draw_menu(self) -> None:
+        self.screen.fill("black")
+
+        square_dimensions = (200, 200)
+        #É o espaço que tera entre cada uma das caixas, por exemplo a coordenata da caixa 2 sera a coordenada da caixa 1 mais
+        #Sua largura (200) e mais um espacinho entre elas que sera é 50
+        level_position_offset = 250
+        level_one_pos = (300, 300)
+        level_two_pos = (300 + level_position_offset, 300)
+        level_tree_pos = (300 + level_position_offset * 2, 300)
+
+        #As tuplas são as coordenadas de um quadrado
+        pygame.draw.rect(self.screen, [0, 255, 0], (level_one_pos, square_dimensions))
+        pygame.draw.rect(self.screen, [0, 255, 0], (level_two_pos, square_dimensions))
+        pygame.draw.rect(self.screen, [0, 255, 0], (level_tree_pos, square_dimensions))
+        
+        pygame.display.flip()
 
     def render(self, state : GameState):
         match state.value:
+            case GameState.MENU.value:
+                self.draw_menu()
             case GameState.SIMULATE.value:
                 self.__draw_simulate()
             case _:
