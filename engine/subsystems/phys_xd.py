@@ -39,7 +39,6 @@ class PhysXD:
             #mais o raio do segundo planeta (quando a distancia esta nessa situação os dois planetas estão tangentes)
             #Portanto, para qualquer distância entre planetas talque a distância entre eles é < ao raio do primeiro + raio do segundo implica uma colisão
             if absolute_distance/10**3 < planet[0].planet_radius + plt[0].planet_radius:
-                print('had colision')
                 return absolute_distance, True
 
             force_norm = (constants.G * planet[0].body.mass * plt[0].body.mass) / absolute_distance ** 2

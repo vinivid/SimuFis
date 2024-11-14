@@ -23,8 +23,13 @@ engine.to_level(3)
 #É o relogio q controla o FPS do jogo
 
 game_running = True
-current_game_state = GameState.GAME_OVER
+current_game_state = GameState.MAIN_MENU
 clock = pygame.time.Clock()
+
+#Porque essas variaveis existem? Porque, por exemplo, no menu principal, de nível e game over é em essencia uma uma tela estatica q n precisamos ficar
+#Renderizando o tempo inteiro
+has_drawn_main_menu = False
+has_drawn_game_over = False
 
 while game_running:
     for event in pygame.event.get():
@@ -32,27 +37,61 @@ while game_running:
             game_running = False
 
     match current_game_state:
-        case GameState.MENU:
-            level_clicked = engine.check_main_menu_click()
+        case GameState.MAIN_MENU:
+            has_drawn_game_over = False
+            option_clicked = engine.check_main_menu_click()
         
-            if level_clicked != None:
-                current_game_state = GameState.SIMULATE
-                engine.load_level(level_clicked)
+            if option_clicked != None:
+                current_game_state = option_clicked
 
-            engine.render_sistem.draw_main_menu()
+                if current_game_state == GameState.START:
+                    engine.load_level(1)
+                    current_game_state = GameState.SIMULATE
+
+            if not has_drawn_main_menu:
+                engine.render_sistem.draw_main_menu()
+                pygame.display.flip()
+                has_drawn_main_menu = True
+
         case GameState.SIMULATE:
+            has_drawn_game_over = False
+            has_drawn_main_menu = False
             simulation_event = engine.physXD.update()
             engine.render_sistem.draw_simulation()
 
             if simulation_event != None:
                 current_game_state = simulation_event
+            
+            #Como a simulação de fisica esta sempre rodando precisamos sempre atualizar a tela
+            pygame.display.flip()
+
         case GameState.GAME_OVER:
-            engine.render_sistem.draw_game_over_menu()
+            has_drawn_main_menu = False
+
+            option_clicked = engine.check_game_over_click()
+
+            if option_clicked != None:
+                current_game_state = option_clicked
+                
+                if option_clicked == GameState.SIMULATE:
+                    engine.load_level(1)
+
+            if not has_drawn_game_over:
+                engine.render_sistem.draw_game_over_menu()
+                pygame.display.flip()
+                has_drawn_game_over = True
+
+        case GameState.LEVEL_SELECT:
+            current_game_state = GameState.MAIN_MENU
+
+        case GameState.EXIT:
+            game_running = False
+
         case _:
-            print(f"{{'\033[0;31m'}}ERROR::INVALID GAME STATE FOR RENDERING")
+            print(f"{{'\033[0;31m'}}ERROR::INVALID GAME STATE")
 
     clock.tick(1000)
     #Se vc quiserer q ele printe of FPS descomente a linha seguinte
-    print(clock.get_fps())
+    #print(clock.get_fps())
 
 pygame.quit()

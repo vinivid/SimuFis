@@ -24,6 +24,53 @@ class Renderer:
 
     #Por enquanto a cada 240 loops armazena um novo ponto
     qtt_loops = int()
+    
+    #Primeiramente, pq não criar uma função que faz toda essa parte de desenhar as pilulas e os textos nela? Resposta: Fica muito mais díficil de 
+    #customizar o tamanho e a posição dos textos
+
+    #Função que desenha e crie a superfíce do menu prícipal
+    def __create_main_menu_surface(self) -> None:
+        self.main_menu_surface.fill([0, 0, 0])
+
+        main_menu_title, _ = self.font.render('JooJplaneta', fgcolor=[255, 255, 255, 255], bgcolor=None, rotation=0, size=100)
+        main_menu_start, _ = self.font.render('Começar', fgcolor=None, bgcolor=None, rotation=0, size=40)
+        main_menu_levels, _ = self.font.render('Níveis', fgcolor=None, bgcolor=None, rotation=0, size=40)
+        main_menu_credits, _ = self.font.render('Créditos', fgcolor=None, bgcolor=None, rotation=0, size=40)
+        main_menu_exit, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=40)
+
+        rectagle_dimensions = (300, 70)
+        vertical_offset = 100
+
+        #É o raio que sera utilizado para se criar uma circunferecia nos cantos dos retangulos de botão para criar um botão de pilula
+        side_circle_radius = rectagle_dimensions[1] // 2
+
+        start_button = (490, 250)
+        levels_button = (490, vertical_offset + 250)
+        credits_button = (490, vertical_offset * 2 + 250)
+        exit_button = (490, vertical_offset * 3 + 250)
+
+        #Desenha o retangulo de cada botão
+        pygame.draw.rect(self.main_menu_surface, [0, 255, 0], (start_button, rectagle_dimensions))
+        pygame.draw.rect(self.main_menu_surface, [0, 255, 0], (levels_button, rectagle_dimensions))
+        pygame.draw.rect(self.main_menu_surface, [0, 0, 255], (credits_button, rectagle_dimensions))
+        pygame.draw.rect(self.main_menu_surface, [255, 0, 0], (exit_button, rectagle_dimensions))
+        #Soma o raio do circulo a maior coordenada do retangulo para que o centro da esfera fique exatamente na metade da linha dos cantos do retangulo
+        #Fazendo com que cada botão fique parecendo uma pilula horizontal
+        pygame.gfxdraw.filled_circle(self.main_menu_surface, start_button[0], start_button[1] + side_circle_radius, side_circle_radius, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.main_menu_surface, start_button[0] + rectagle_dimensions[0], start_button[1] + side_circle_radius, side_circle_radius, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.main_menu_surface, levels_button[0], levels_button[1] + side_circle_radius, side_circle_radius, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.main_menu_surface, levels_button[0] + rectagle_dimensions[0], levels_button[1] + side_circle_radius, side_circle_radius, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.main_menu_surface, credits_button[0], credits_button[1] + side_circle_radius, side_circle_radius, [0, 0, 255, 255])
+        pygame.gfxdraw.filled_circle(self.main_menu_surface, credits_button[0] + rectagle_dimensions[0], credits_button[1] + side_circle_radius, side_circle_radius, [0, 0, 255, 255])
+        pygame.gfxdraw.filled_circle(self.main_menu_surface, exit_button[0], exit_button[1] + side_circle_radius, side_circle_radius, [255, 0, 0, 255])
+        pygame.gfxdraw.filled_circle(self.main_menu_surface, exit_button[0] + rectagle_dimensions[0], exit_button[1] + side_circle_radius, side_circle_radius, [255, 0, 0, 255])
+
+        #Desenha o texto na superfíce do titulo prícipal
+        self.main_menu_surface.blit(main_menu_title, (370, 100))
+        self.main_menu_surface.blit(main_menu_start, (start_button[0] + 85, start_button[1] + 20))
+        self.main_menu_surface.blit(main_menu_levels, (levels_button[0] + 105, levels_button[1] + 20))
+        self.main_menu_surface.blit(main_menu_credits, (credits_button[0] + 85, credits_button[1] + 20))
+        self.main_menu_surface.blit(main_menu_exit, (exit_button[0] + 125, exit_button[1] + 20))
 
     #Cria a superfice em que esta desenhada a tela de game over
     def __create_game_over_surface(self) -> None:
@@ -60,11 +107,8 @@ class Renderer:
         self.screen = pygame.display.set_mode( (screen_heigth, screen_width) )
         self.font = pygame.freetype.Font('./engine/fonts/Roboto-Regular.ttf', 12)
 
-        #Criar os textos para renderizar na tela de game over                    
-        self.game_over_continue_text, _ = self.font.render('Continuar', fgcolor=None, bgcolor=None, rotation=0, size=60)
-        self.game_over_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
-        self.game_over_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
-        self.has_draw_game_over = False
+        self.main_menu_surface = pygame.Surface((1280, 720))
+        self.__create_main_menu_surface()
 
         self.game_over_surface = pygame.Surface((1280, 720))
         self.__create_game_over_surface()
@@ -138,30 +182,13 @@ class Renderer:
         self.__draw_accel_vector()
         #self.draw_main_planet_stats()
         self.qtt_loops += 1
-        pygame.display.flip()
 
     def __draw_rec_obj(self) -> None:
         for rect in self.rect_objs:
             self.screen.blit(rect.surface, rect.pos)
 
     def draw_main_menu(self) -> None:
-        self.screen.fill("black")
-
-        square_dimensions = (200, 200)
-        #É o espaço que tera entre cada uma das caixas, por exemplo a coordenata da caixa 2 sera a coordenada da caixa 1 mais
-        #Sua largura (200) e mais um espacinho entre elas que sera é 50
-        level_position_offset = 250
-        level_one_pos = (300, 300)
-        level_two_pos = (300 + level_position_offset, 300)
-        level_tree_pos = (300 + level_position_offset * 2, 300)
-
-        #As tuplas são as coordenadas de um quadrado
-        pygame.draw.rect(self.screen, [0, 255, 0], (level_one_pos, square_dimensions))
-        pygame.draw.rect(self.screen, [0, 255, 0], (level_two_pos, square_dimensions))
-        pygame.draw.rect(self.screen, [0, 255, 0], (level_tree_pos, square_dimensions))
-        
-        pygame.display.flip()
+        self.screen.blit(self.main_menu_surface, (0,0))
 
     def draw_game_over_menu(self) -> None:
         self.screen.blit(self.game_over_surface, (0,0))
-        pygame.display.flip()

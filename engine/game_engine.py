@@ -48,6 +48,8 @@ class GameEngine:
         self.rect_objs.clear()
         self.physXD.rect_objs.clear()
         self.render_sistem.rect_objs.clear()
+        self.render_sistem.trailing_line.clear()
+        self.render_sistem.previus_points.clear()
 
     #Transforma os objetos que foi colocados até agora em um nível.
     def to_level(self, level_number : int) -> None:
@@ -88,25 +90,50 @@ class GameEngine:
         else: 
             return False
 
-    #Checa se o jogador clicou em algum dos níveis no seletor de níveis
-    def check_main_menu_click(self) -> int | None:
-        square_dimensions = (200, 200)
-        #É o espaço que tera entre cada uma das caixas, por exemplo a coordenata da caixa 2 sera a coordenada da caixa 1 mais
-        #Sua largura (200) e mais um espacinho entre elas que sera é 50
-        level_position_offset = 250
-        level_one_pos = (300, 300)
-        level_two_pos = (300 + level_position_offset, 300)
-        level_tree_pos = (300 + level_position_offset * 2, 300)
+    #Checa se o jogador clicou em alguma das opções do menu pricipal
+    def check_main_menu_click(self) -> GameState | None:
+        rectagle_dimensions = (370, 70)
+        vertical_offset = 100
 
-        check_first_square  = self.__check_rect_click(level_one_pos, square_dimensions)
-        check_second_square = self.__check_rect_click(level_two_pos, square_dimensions)
-        check_third_square = self.__check_rect_click(level_tree_pos, square_dimensions)
+        start_button = (455, 250)
+        levels_button = (455, vertical_offset + 250)
+        credits_button = (455, vertical_offset * 2 + 250)
+        exit_button = (455, vertical_offset * 3 + 250)
 
-        if check_first_square:
-            return 1
-        elif check_second_square:
-            return 2
-        elif check_third_square:
-            return 3
+        check_button_1 = self.__check_rect_click(start_button, rectagle_dimensions)
+        check_button_2 = self.__check_rect_click(levels_button, rectagle_dimensions)
+        check_button_3 = self.__check_rect_click(credits_button, rectagle_dimensions)
+        check_button_4 = self.__check_rect_click(exit_button, rectagle_dimensions)
+
+        if check_button_1:
+            return GameState.START
+        elif check_button_2:
+            return GameState.LEVEL_SELECT
+        elif check_button_3:
+            return GameState.CREDITS
+        elif check_button_4:
+            return GameState.EXIT
+        else:
+            return None
+    
+    #Checa qual botão foi clicado na tela de game over
+    def check_game_over_click(self) -> GameState | None:
+        rectagle_dimensions = (400, 100)
+        vertical_offset = 175
+
+        continue_button = (440, 150)
+        main_menu_button = (440, vertical_offset + 150)
+        exit_button = (440, vertical_offset * 2 + 150)
+
+        check_button_1 = self.__check_rect_click(continue_button, rectagle_dimensions)
+        check_button_2 = self.__check_rect_click(main_menu_button, rectagle_dimensions)
+        check_button_3 = self.__check_rect_click(exit_button, rectagle_dimensions)
+
+        if check_button_1:
+            return GameState.SIMULATE
+        elif check_button_2:
+            return GameState.MAIN_MENU
+        elif check_button_3:
+            return GameState.EXIT
         else:
             return None

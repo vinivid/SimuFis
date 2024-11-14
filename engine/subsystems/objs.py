@@ -7,11 +7,15 @@ WIN_RECTANGLE = 1
 LOSE_RECTANGLE = 0
 
 class GameState(Enum):
-    MENU = 0
-    SIMULATE = 1
-    GAME_OVER = 2
-    GAME_WIN = 4
-    EXIT = 8
+    #O start é especial pq ele só é usado no menu principal para começar des do nível 1
+    START = -1
+    MAIN_MENU = 0
+    LEVEL_SELECT = 1
+    CREDITS = 2
+    SIMULATE = 4
+    GAME_OVER = 8
+    GAME_WIN = 16
+    EXIT = 32
 
 @dataclass
 class Body:
@@ -55,7 +59,7 @@ class RectObstacle:
         self.surface.fill(color[0:3])
         self.color = color
 
-    def check_collision(self, planet : Planet) -> GameState:
+    def check_collision(self, planet : Planet) -> GameState | None:
         #constantes para facilitar saída
         #largemax é a maior coordenada do retangulo para a direita
         right_rect = self.pos[0] + self.width
@@ -80,4 +84,4 @@ class RectObstacle:
                 return GameState.GAME_OVER
         #Se não detectar dentro da area retorna NONE (nenhuma das duas)
         else:
-            return GameState.NO_CHANGE
+            return None
