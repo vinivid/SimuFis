@@ -1,8 +1,11 @@
 import pygame
 import pygame.freetype
 from collections import deque
+
+import pygame.freetype
 from .objs import *
 from ..game_engine import GameState
+import pygame.gfxdraw
 
 class Renderer:    
     #É uma lista de planetas e id de cada um
@@ -22,13 +25,49 @@ class Renderer:
     #Por enquanto a cada 240 loops armazena um novo ponto
     qtt_loops = int()
 
-    #Constantes que representam se deve desenhar a seta na posição da UI ou no planeta principal
+    #Cria a superfice em que esta desenhada a tela de game over
+    def __create_game_over_surface(self) -> None:
+        self.game_over_surface.fill([0, 0, 0])
+
+        game_over_continue_text, _ = self.font.render('Continuar', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_over_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_over_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
+
+        rectagle_dimensions = (400, 100)
+        vertical_offset = 175
+
+        continue_button = (440, 150)
+        main_menu_button = (440, vertical_offset + 150)
+        exit_button = (440, vertical_offset * 2 + 150)
+
+        pygame.draw.rect(self.game_over_surface, [0, 255, 0], (continue_button, rectagle_dimensions))
+        pygame.draw.rect(self.game_over_surface, [0, 255, 0], (main_menu_button, rectagle_dimensions))
+        pygame.draw.rect(self.game_over_surface, [255, 0, 0], (exit_button, rectagle_dimensions))
+        pygame.gfxdraw.filled_circle(self.game_over_surface, continue_button[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_over_surface, continue_button[0] + rectagle_dimensions[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_over_surface, main_menu_button[0], main_menu_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_over_surface, main_menu_button[0] + rectagle_dimensions[0], main_menu_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_over_surface, exit_button[0], exit_button[1] + 50, 50, [255, 0, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_over_surface, exit_button[0] + rectagle_dimensions[0], exit_button[1] + 50, 50, [255, 0, 0, 255])
+
+        self.game_over_surface.blit(game_over_continue_text, (continue_button[0] + 85, continue_button[1] + 20))
+        self.game_over_surface.blit(game_over_main_menu_text, (main_menu_button[0] + 7, main_menu_button[1] + 20))
+        self.game_over_surface.blit(game_over_exit_text, (exit_button[0] + 140, exit_button[1] + 20))
 
     def __init__(self, screen_heigth : int, screen_width : int,
                  ) -> None:
         
         self.screen = pygame.display.set_mode( (screen_heigth, screen_width) )
         self.font = pygame.freetype.Font('./engine/fonts/Roboto-Regular.ttf', 12)
+
+        #Criar os textos para renderizar na tela de game over                    
+        self.game_over_continue_text, _ = self.font.render('Continuar', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        self.game_over_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        self.game_over_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        self.has_draw_game_over = False
+
+        self.game_over_surface = pygame.Surface((1280, 720))
+        self.__create_game_over_surface()
     
     #Desenha uma flecha com base numa posição inicial e a direção q ela vai apontar
     #A direção q é o direction vector tem de ser um vetor de norma 1
@@ -124,15 +163,5 @@ class Renderer:
         pygame.display.flip()
 
     def draw_game_over_menu(self) -> None:
-        rectagle_dimensions = (400, 100)
-        vertical_offset = 175
-
-        continue_button = (440, 150)
-        main_menu_button = (440, vertical_offset + 150)
-        exit_button = (440, vertical_offset * 2 + 150)
-
-        pygame.draw.rect(self.screen, [0, 255, 0], (continue_button, rectagle_dimensions))
-        pygame.draw.rect(self.screen, [0, 255, 0], (main_menu_button, rectagle_dimensions))
-        pygame.draw.rect(self.screen, [255, 0, 0], (exit_button, rectagle_dimensions))
-
+        self.screen.blit(self.game_over_surface, (0,0))
         pygame.display.flip()

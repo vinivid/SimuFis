@@ -23,7 +23,7 @@ engine.to_level(3)
 #É o relogio q controla o FPS do jogo
 
 game_running = True
-current_game_state = GameState.MENU
+current_game_state = GameState.GAME_OVER
 clock = pygame.time.Clock()
 
 while game_running:
@@ -51,8 +51,8 @@ while game_running:
         case _:
             print(f"{{'\033[0;31m'}}ERROR::INVALID GAME STATE FOR RENDERING")
 
-    #self.clock.tick(1000)
+    clock.tick(1000)
     #Se vc quiserer q ele printe of FPS descomente a linha seguinte
-    #print(clock.get_fps())
+    print(clock.get_fps())
 
 pygame.quit()

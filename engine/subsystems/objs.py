@@ -11,6 +11,7 @@ class GameState(Enum):
     SIMULATE = 1
     GAME_OVER = 2
     GAME_WIN = 4
+    EXIT = 8
 
 @dataclass
 class Body:
