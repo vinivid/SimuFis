@@ -9,8 +9,8 @@ class PhysXD:
     planets = list[list[Planet, int]]()
     rect_objs = list[RectObstacle]()
 
-    #TODO: Fazer a verificação de colisões
-    def __colision_detect(self, planet : list[Planet, int]) -> GameState:
+    #Checa se o planeta pricipal esta dentro de alguma area não permitida
+    def __rect_colision_detect(self, planet : list[Planet, int]) -> GameState | None:
         if planet[1] == 0:
             for rect in self.rect_objs:
                 if_collide = rect.check_collision(self.planets[0][0])
@@ -18,11 +18,12 @@ class PhysXD:
                 if if_collide == GameState.GAME_WIN or if_collide == GameState.GAME_OVER:
                     return if_collide
         
-        return GameState.NO_CHANGE
-            
+        return None
+                
     #Calcula cada uma das forças que atuam em um corpo especifico colocando o referencial no outro objeto para que não tenhamos que negar o vetor
+    #Retorna a acleração resultante das forças que atuam no corpo ou retorna o estado de jogo GAME_OVER se ouve uma colisão
     def __update_force(self, planet : list[Planet, int]
-                       ) -> numpy.ndarray:
+                       ) -> tuple[numpy.ndarray, bool]:
         
         #Acumular as forças que são calculadas para representar a resultante
         acumulate_forces = numpy.zeros(2)
@@ -32,6 +33,15 @@ class PhysXD:
                 continue
 
             absolute_distance = numpy.linalg.norm(plt[0].body.pos - planet[0].body.pos)
+
+            #Para checar se dois planetas colidiram precisamos verificar o seguinte:
+            #Dada a distancia entre o centro desses dois planetas, temos que a distancia minima para que eles não estajam colidindo é o raio do primeiro
+            #mais o raio do segundo planeta (quando a distancia esta nessa situação os dois planetas estão tangentes)
+            #Portanto, para qualquer distância entre planetas talque a distância entre eles é < ao raio do primeiro + raio do segundo implica uma colisão
+            if absolute_distance/10**3 < planet[0].planet_radius + plt[0].planet_radius:
+                print('had colision')
+                return absolute_distance, True
+
             force_norm = (constants.G * planet[0].body.mass * plt[0].body.mass) / absolute_distance ** 2
 
             x_projection = force_norm * ( (plt[0].body.pos[0] - planet[0].body.pos[0] )/absolute_distance)
@@ -41,7 +51,7 @@ class PhysXD:
             acumulate_forces[1] += y_projection
         
         #segunda lei de newton
-        return acumulate_forces/planet[0].body.mass
+        return acumulate_forces/planet[0].body.mass, False
 
     #O que esta escrito abaixo vem do método de integrar de Verlet
     #O metódo de Stormer-Verlet para calcular velocidades é um método adequado para esse projeto por ele ser o Thanos das tecnicas de integrar a velocidade
@@ -52,14 +62,26 @@ class PhysXD:
     #Também tem o método de leapfrog só q ele é goofy
     #TODO: Explicar esse algoritimo e a teoria no relatório
     def __velocity_verlet(self
-                          ) -> None:
-        
+                          ) -> None | GameState:
+
+        rect_check = self.__rect_colision_detect(self.planets[0])
+
+        if rect_check != None:
+            return rect_check
+
         for planet in self.planets :
             planet[0].body.pos = planet[0].body.pos + planet[0].body.vel * self.dt + planet[0].body.accel * (self.dt**2 * 0.5)
-            self.__colision_detect(planet)
-            n_accel : numpy.ndarray = self.__update_force(planet)
+            #O update forces também checa se teve colisão
+            n_accel, had_colision = self.__update_force(planet)
+
+            if had_colision:
+                return GameState.GAME_OVER
+            
             planet[0].body.vel = planet[0].body.vel + (planet[0].body.accel + n_accel) * (self.dt*0.5)
             planet[0].body.accel = n_accel
 
-    def update(self) -> None:
-        self.__velocity_verlet()
+    #Simula a física do jogo por um pass
+    #Retorna game over se algum planeta colidir (pode ser qualquer planeta, não apenas o player) ou se o planeta player for em um retangulo de perda
+    #Retorna game win se o planeta chegar na area de vitória
+    def update(self) -> None | GameState:
+        return self.__velocity_verlet()

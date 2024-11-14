@@ -71,7 +71,7 @@ class Renderer:
         self.font.render_to(self.screen, (10, 25), f'Aceleração: {numpy.linalg.norm(main_planet.body.accel)/(10**3):.4f}', [255, 255, 255])
         self.font.render_to(self.screen, (140, 25), f'km/s^2', [255, 255, 255])
 
-    def __draw_simulate(self):
+    def draw_simulation(self):
         self.screen.fill("black")
 
         if self.qtt_loops == 240:
@@ -89,13 +89,12 @@ class Renderer:
         for prev_pt in self.previus_points:
             pygame.draw.circle(self.screen, [128, 128, 128 , 170], prev_pt, self.previous_point_radius)                
 
-        for planet in self.planets:
-            pygame.draw.circle(self.screen, planet[0].color, planet[0].body.pos/(10 ** 3), planet[0].planet_radius)
-        
-        #Renderiza todos os pontos anteriores, como a cor da linha que segue é a mesma do planeta não há problemas em rederizar em cima dele
         for i in range(0, len(self.trailing_line)):
             pygame.draw.circle(self.screen, self.planets[0][0].color, self.trailing_line[i], self.planets[0][0].planet_radius * (i + 1)/100)
-        
+
+        for planet in self.planets:
+            pygame.draw.circle(self.screen, planet[0].color, planet[0].body.pos/(10 ** 3), planet[0].planet_radius)
+                
         #Incrementa a quantidade de loops de renderização feitos e muda o buffer de renderização
         self.__draw_accel_vector()
         #self.draw_main_planet_stats()
@@ -106,7 +105,7 @@ class Renderer:
         for rect in self.rect_objs:
             self.screen.blit(rect.surface, rect.pos)
 
-    def draw_menu(self) -> None:
+    def draw_main_menu(self) -> None:
         self.screen.fill("black")
 
         square_dimensions = (200, 200)
@@ -124,11 +123,16 @@ class Renderer:
         
         pygame.display.flip()
 
-    def render(self, state : GameState):
-        match state.value:
-            case GameState.MENU.value:
-                self.draw_menu()
-            case GameState.SIMULATE.value:
-                self.__draw_simulate()
-            case _:
-                print(f"{{'\033[0;31m'}}ERROR::INVALID GAME STATE FOR RENDERING")
+    def draw_game_over_menu(self) -> None:
+        rectagle_dimensions = (400, 100)
+        vertical_offset = 175
+
+        continue_button = (440, 150)
+        main_menu_button = (440, vertical_offset + 150)
+        exit_button = (440, vertical_offset * 2 + 150)
+
+        pygame.draw.rect(self.screen, [0, 255, 0], (continue_button, rectagle_dimensions))
+        pygame.draw.rect(self.screen, [0, 255, 0], (main_menu_button, rectagle_dimensions))
+        pygame.draw.rect(self.screen, [255, 0, 0], (exit_button, rectagle_dimensions))
+
+        pygame.display.flip()

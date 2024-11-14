@@ -15,10 +15,6 @@ class GameEngine:
         #Eu lockei essa resolução para que tudo que tudo mundo fazer fique padronizado e funcionando
         self.render_sistem = Renderer(1280, 720)
 
-        #É a variavel que representa se o jogo ainda esta rodando
-        self.game_running = True
-        self.current_game_state = GameState.MENU
-        self.clock = pygame.time.Clock()
 
     def add_planet(self, planet : Planet) -> None:
         if not self.planets:
@@ -37,11 +33,6 @@ class GameEngine:
         self.rect_objs.append(obstacle)
         self.physXD.rect_objs.append(obstacle)
         self.render_sistem.rect_objs.append(obstacle)
-
-    #Muda as caracteristacas de um planeta
-    def change_planet_characteristics(self, planet_id : int, **kwargs) -> None :
-        if 'vel' in kwargs:
-            self.planets[planet_id] = numpy.array(kwargs['vel'])
 
     def update_physics(self) -> None:
         self.physXD.update()
@@ -88,6 +79,7 @@ class GameEngine:
                     rect_to_add = RectObstacle(float(data[1]), float(data[2]), [float(data[3]), float(data[4])], int(data[5], 10), [int(data[6], 10), int(data[7], 10), int(data[8],10), int(data[9],10)])
                     self.add_rect_obstacle(rect_to_add)
     
+    #Checa se a area delimitado por um objeto retangular foi clicado
     def __check_rect_click(self, rect_pos : tuple, rect_width_height : tuple) -> bool:
         mouse_pos = pygame.mouse.get_pos()
 
@@ -96,7 +88,8 @@ class GameEngine:
         else: 
             return False
 
-    def check_main_menu_click(self) -> int:
+    #Checa se o jogador clicou em algum dos níveis no seletor de níveis
+    def check_main_menu_click(self) -> int | None:
         square_dimensions = (200, 200)
         #É o espaço que tera entre cada uma das caixas, por exemplo a coordenata da caixa 2 sera a coordenada da caixa 1 mais
         #Sua largura (200) e mais um espacinho entre elas que sera é 50
@@ -116,28 +109,4 @@ class GameEngine:
         elif check_third_square:
             return 3
         else:
-            return -1
-        
-        
-    #Como o jogo é simples eu preferi colocar o game loop hardcodado dentro da engine, como provavelmente a gente n vai reutilizar ela
-    #Isso não sera um grande problema
-    def game_loop(self) -> None:
-        while self.game_loop:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.game_loop = False
-            
-            if self.current_game_state.value == GameState.MENU.value:
-                level_clicked = self.check_main_menu_click()
-                
-                if level_clicked != -1:
-                    self.current_game_state = GameState.SIMULATE
-                    self.load_level(level_clicked)
-            
-            if self.current_game_state.value == GameState.SIMULATE.value:
-                self.physXD.update()
-
-            self.render_sistem.render(self.current_game_state)
-            #self.clock.tick(1000)
-            #Se vc quiserer q ele printe of FPS descomente a linha seguinte
-            #print(clock.get_fps())
+            return None

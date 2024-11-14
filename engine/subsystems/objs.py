@@ -7,7 +7,6 @@ WIN_RECTANGLE = 1
 LOSE_RECTANGLE = 0
 
 class GameState(Enum):
-    NO_CHANGE = -1
     MENU = 0
     SIMULATE = 1
     GAME_OVER = 2
