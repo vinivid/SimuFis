@@ -145,18 +145,25 @@ class GameEngine:
 
         while released == False:
             pygame.event.pump()
+
+            for i in range (0, 500000):
+                pygame.event.pump()
+
+            while not pygame.mouse.get_pressed()[0]:
+                pygame.event.pump()
+
             while pygame.mouse.get_pressed()[0]:
                 pygame.event.pump()
 
                 mouse_pos = numpy.array(pygame.mouse.get_pos())  # Posição atual do mouse como vetor
-                self.render_sistem.draw_simulation()
-                self.render_sistem.draw_arrow([255, 255, 255], origin, mouse_pos/numpy.linalg.norm(mouse_pos - origin), 2, numpy.linalg.norm(mouse_pos - origin)) # Desenha o vetor que mostra para onde o planeta será lançado
+                mouse_pos = mouse_pos - origin
+                self.render_sistem.draw_initial_simulation()
+                self.render_sistem.draw_arrow([0, 255, 0], origin, mouse_pos/numpy.linalg.norm(mouse_pos - origin), 2, 1/10, numpy.linalg.norm(mouse_pos - origin)) # Desenha o vetor que mostra para onde o planeta será lançado
                 pygame.display.flip()
                 
-                if not pygame.mouse.get_pressed()[0]:
-                    released = True
+            released = True
 
                 
-        self.planets[0][0].body.vel = (mouse_pos - origin) * constant # Atualiza a velocidade do planeta
+        self.planets[0][0].body.vel = (mouse_pos) * constant # Atualiza a velocidade do planeta
                 
-        return None
+        return GameState.SIMULATE

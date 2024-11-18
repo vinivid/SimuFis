@@ -23,7 +23,7 @@ class Renderer:
     previus_points = list[numpy.ndarray]()
 
     #Por enquanto a cada 240 loops armazena um novo ponto
-    qtt_loops = int()
+    qtt_loops = int(0)
     
     #Primeiramente, pq não criar uma função que faz toda essa parte de desenhar as pilulas e os textos nela? Resposta: Fica muito mais díficil de 
     #customizar o tamanho e a posição dos textos
@@ -116,7 +116,7 @@ class Renderer:
     #Desenha uma flecha com base numa posição inicial e a direção q ela vai apontar
     #A direção q é o direction vector tem de ser um vetor de norma 1
     #A arrow strenght é a escala q vetor da posição vai ser desenhado
-    def draw_arrow(self, arrow_color : list, ini_pos : numpy.ndarray, direction_vector: numpy.ndarray, arrow_width : int, arrow_strenght : float):
+    def draw_arrow(self, arrow_color : list, ini_pos : numpy.ndarray, direction_vector: numpy.ndarray, arrow_width : int, arrow_head : float, arrow_strenght : float):
         ending_pos = ini_pos + (direction_vector * arrow_strenght)
         pygame.draw.line(self.screen, arrow_color, ini_pos, ending_pos, arrow_width)
         #Desenhando o triangulo
@@ -126,8 +126,8 @@ class Renderer:
 
         orthogonal_vec = numpy.array([direction_vector[1], - direction_vector[0]])
         #Vetores da base do triangule esquerda/direita
-        basis_vector1 = ending_pos + (orthogonal_vec * (arrow_strenght * 1/5))
-        basis_vector2 = ending_pos + (-orthogonal_vec * (arrow_strenght * 1/5))
+        basis_vector1 = ending_pos + (orthogonal_vec * (arrow_strenght * arrow_head))
+        basis_vector2 = ending_pos + (-orthogonal_vec * (arrow_strenght * arrow_head))
         #Altura do triangulo para fazer um triangulo quase equilatero
         triangle_height = ending_pos + ( (direction_vector * 0.86) * ((arrow_strenght * 1/6) * 2))
         pygame.draw.polygon(self.screen, arrow_color, [basis_vector1, basis_vector2, triangle_height])
@@ -141,9 +141,9 @@ class Renderer:
 
             #Para que não fique uma linha gigantesca
         if accel_norm > 2000:
-            self.__draw_arrow([255, 255, 255, 255], main_planet.body.pos/(10**3), point_to, 2, 20)
+            self.draw_arrow([255, 255, 255, 255], main_planet.body.pos/(10**3), point_to, 2, 1/5, 20)
         else:
-            self.__draw_arrow([255, 255, 255, 255], main_planet.body.pos/(10**3), point_to, 2, accel_norm/100)
+            self.draw_arrow([255, 255, 255, 255], main_planet.body.pos/(10**3), point_to, 2, 1/5, accel_norm/100)
     
     #Renderizar texto faz o jogo rodar em muitos menos frames protanto eu recomendo não renderizar texto enquanto o jogo ta rodando
     def __draw_main_planet_stats(self):
@@ -154,6 +154,15 @@ class Renderer:
         self.font.render_to(self.screen, (10, 25), f'Aceleração: {numpy.linalg.norm(main_planet.body.accel)/(10**3):.4f}', [255, 255, 255])
         self.font.render_to(self.screen, (140, 25), f'km/s^2', [255, 255, 255])
 
+    #Versão do draw simulation para antes de lançar o planeta, é necessário desenhar menos coisas
+    def draw_initial_simulation(self):
+        self.screen.fill("black")
+
+        self.__draw_rec_obj()
+
+        for planet in self.planets:
+            pygame.draw.circle(self.screen, planet[0].color, planet[0].body.pos/(10 ** 3), planet[0].planet_radius)
+        
     def draw_simulation(self):
         self.screen.fill("black")
 
@@ -179,7 +188,7 @@ class Renderer:
             pygame.draw.circle(self.screen, planet[0].color, planet[0].body.pos/(10 ** 3), planet[0].planet_radius)
                 
         #Incrementa a quantidade de loops de renderização feitos e muda o buffer de renderização
-        #self.__draw_accel_vector()
+        self.__draw_accel_vector()
         #self.draw_main_planet_stats()
         self.qtt_loops += 1
 

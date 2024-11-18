@@ -18,7 +18,7 @@ engine.add_planet(planet2)
 #engine.add_rect_obstacle(rect1)
 #engine.add_rect_obstacle(rect2)
 
-engine.to_level(3)
+engine.to_level(1)
 #engine.load_level()
 #É o relogio q controla o FPS do jogo
 
@@ -57,10 +57,9 @@ while game_running:
             print('asd')
             has_drawn_game_over = False
             has_drawn_main_menu = False
-            engine.render_sistem.draw_simulation()
+            engine.render_sistem.draw_initial_simulation()
             pygame.display.flip()
-            engine.initial_speed_calculate(1, 100)
-            current_game_state = GameState.SIMULATE
+            current_game_state = engine.initial_speed_calculate(10**2, 100)
 
         case GameState.SIMULATE:
             has_drawn_game_over = False
@@ -101,6 +100,6 @@ while game_running:
 
     clock.tick(1000)
     #Se vc quiserer q ele printe of FPS descomente a linha seguinte
-    #print(clock.get_fps())
+    print(clock.get_fps())
 
 pygame.quit()
