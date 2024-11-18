@@ -137,3 +137,27 @@ class GameEngine:
             return GameState.EXIT
         else:
             return None
+        
+    # Calcula a velocidade incial do planeta principal com base na posição do mouse
+    def initial_speed_calculate(self, constant, radius, screen_height):
+        released = False
+        origin = numpy.ndarray([0, screen_height])  # Sairá do canto inferior esquerdo da tela
+
+        while not numpy.sum((numpy.ndarray(pygame.mouse.get_pos()) - origin)**2) < radius**2:
+            pygame.event.pump()
+        
+        while numpy.sum((numpy.ndarray(pygame.mouse.get_pos()) - origin)**2) < radius**2 or not released: # Verifica se está dentro da área estabelecida
+            
+            while not pygame.mouse.get_pressed()[0]:
+                pygame.event.pump()
+
+            while pygame.mouse.get_pressed()[0]: # Usa o botão esquerdo
+                mouse_pos = numpy.ndarray(pygame.mouse.get_pos())  # Posição atual do mouse como vetor
+                __draw_arrow([255, 255, 255], origin, mouse_pos, 2, 1.0) # Desenha o vetor que mostra para onde o planeta será lançado
+                pygame.event.pump()
+
+            released = True
+                
+        self.planets[0].vel = (mouse_pos - origin) * constant # Atualiza a velocidade do planeta
+                
+        return True # Retorna estado e ir pra simulação, até agr está errado
