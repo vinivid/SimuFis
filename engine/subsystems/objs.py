@@ -8,10 +8,11 @@ LOSE_RECTANGLE = 0
 
 class GameState(Enum):
     #O start é especial pq ele só é usado no menu principal para começar des do nível 1
+    CREDITS = -2
     START = -1
     MAIN_MENU = 0
     LEVEL_SELECT = 1
-    CREDITS = 2
+    INITIAL_SPEED = 2
     SIMULATE = 4
     GAME_OVER = 8
     GAME_WIN = 16

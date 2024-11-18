@@ -46,12 +46,21 @@ while game_running:
 
                 if current_game_state == GameState.START:
                     engine.load_level(1)
-                    current_game_state = GameState.SIMULATE
+                    current_game_state = GameState.INITIAL_SPEED
 
             if not has_drawn_main_menu:
                 engine.render_sistem.draw_main_menu()
                 pygame.display.flip()
                 has_drawn_main_menu = True
+
+        case GameState.INITIAL_SPEED:
+            print('asd')
+            has_drawn_game_over = False
+            has_drawn_main_menu = False
+            engine.render_sistem.draw_simulation()
+            pygame.display.flip()
+            engine.initial_speed_calculate(1, 100)
+            current_game_state = GameState.SIMULATE
 
         case GameState.SIMULATE:
             has_drawn_game_over = False
@@ -73,7 +82,7 @@ while game_running:
             if option_clicked != None:
                 current_game_state = option_clicked
                 
-                if option_clicked == GameState.SIMULATE:
+                if option_clicked == GameState.INITIAL_SPEED:
                     engine.load_level(1)
 
             if not has_drawn_game_over:

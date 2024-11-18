@@ -116,7 +116,7 @@ class Renderer:
     #Desenha uma flecha com base numa posição inicial e a direção q ela vai apontar
     #A direção q é o direction vector tem de ser um vetor de norma 1
     #A arrow strenght é a escala q vetor da posição vai ser desenhado
-    def __draw_arrow(self, arrow_color : list, ini_pos : numpy.ndarray, direction_vector: numpy.ndarray, arrow_width : int, arrow_strenght : float):
+    def draw_arrow(self, arrow_color : list, ini_pos : numpy.ndarray, direction_vector: numpy.ndarray, arrow_width : int, arrow_strenght : float):
         ending_pos = ini_pos + (direction_vector * arrow_strenght)
         pygame.draw.line(self.screen, arrow_color, ini_pos, ending_pos, arrow_width)
         #Desenhando o triangulo
@@ -179,7 +179,7 @@ class Renderer:
             pygame.draw.circle(self.screen, planet[0].color, planet[0].body.pos/(10 ** 3), planet[0].planet_radius)
                 
         #Incrementa a quantidade de loops de renderização feitos e muda o buffer de renderização
-        self.__draw_accel_vector()
+        #self.__draw_accel_vector()
         #self.draw_main_planet_stats()
         self.qtt_loops += 1
 

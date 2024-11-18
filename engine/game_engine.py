@@ -130,7 +130,7 @@ class GameEngine:
         check_button_3 = self.__check_rect_click(exit_button, rectagle_dimensions)
 
         if check_button_1:
-            return GameState.SIMULATE
+            return GameState.INITIAL_SPEED
         elif check_button_2:
             return GameState.MAIN_MENU
         elif check_button_3:
@@ -139,25 +139,27 @@ class GameEngine:
             return None
         
     # Calcula a velocidade incial do planeta principal com base na posição do mouse
-    def initial_speed_calculate(self, constant, radius, screen_height):
+    def initial_speed_calculate(self, constant, radius):
         released = False
-        origin = numpy.ndarray([0, screen_height])  # Sairá do canto inferior esquerdo da tela
+        origin = self.planets[0][0].body.pos/10**3
 
-        while not numpy.sum((numpy.ndarray(pygame.mouse.get_pos()) - origin)**2) < radius**2:
-            pygame.event.pump()
+        #while not numpy.linalg.norm(numpy.array(pygame.mouse.get_pos()-origin))<radius:
+            #pygame.event.pump()
         
-        while numpy.sum((numpy.ndarray(pygame.mouse.get_pos()) - origin)**2) < radius**2 or not released: # Verifica se está dentro da área estabelecida
-            
-            while not pygame.mouse.get_pressed()[0]:
-                pygame.event.pump()
+        #while numpy.linalg.norm(numpy.array(pygame.mouse.get_pos()-origin))<radius or not released: # Verifica se está dentro da área estabelecida
+        while True:
+            print(pygame.mouse.get_pressed()[0])
+            """if pygame.mouse.get_pressed()[0]:
+                print('aqui')
+                a = int(0)
+                while not (pygame.MOUSEBUTTONUP in pygame.get()):
+                    a += 1
+                    print(a)
+                    mouse_pos = numpy.array(pygame.mouse.get_pos())  # Posição atual do mouse como vetor
+                    self.render_sistem.draw_arrow([255, 255, 255], origin, mouse_pos/numpy.linalg.norm(mouse_pos), 2, numpy.linalg.norm(mouse_pos)/100) # Desenha o vetor que mostra para onde o planeta será lançado
+                    pygame.display.flip() """
 
-            while pygame.mouse.get_pressed()[0]: # Usa o botão esquerdo
-                mouse_pos = numpy.ndarray(pygame.mouse.get_pos())  # Posição atual do mouse como vetor
-                __draw_arrow([255, 255, 255], origin, mouse_pos, 2, 1.0) # Desenha o vetor que mostra para onde o planeta será lançado
-                pygame.event.pump()
-
-            released = True
                 
-        self.planets[0].vel = (mouse_pos - origin) * constant # Atualiza a velocidade do planeta
+        self.planets[0][0].body.vel = (mouse_pos - origin) * constant # Atualiza a velocidade do planeta
                 
-        return True # Retorna estado e ir pra simulação, até agr está errado
+        return None
