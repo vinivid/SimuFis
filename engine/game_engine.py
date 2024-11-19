@@ -142,6 +142,9 @@ class GameEngine:
     def initial_speed_calculate(self, constant, radius):
         released = False
         origin = self.planets[0][0].body.pos/10**3
+        self.render_sistem.draw_initial_simulation()
+        pygame.gfxdraw.aacircle(self.render_sistem.screen, int(self.planets[0][0].body.pos[0]/10**3), int(self.planets[0][0].body.pos[1]/10**3), int(radius), [255, 255, 255, 255])
+        pygame.display.flip()    
 
         while released == False:
             pygame.event.pump()
@@ -150,7 +153,7 @@ class GameEngine:
                 pygame.event.pump()
 
             while not pygame.mouse.get_pressed()[0]:
-                pygame.event.pump()
+                pygame.event.pump() 
 
             while pygame.mouse.get_pressed()[0]:
                 pygame.event.pump()
@@ -158,12 +161,22 @@ class GameEngine:
                 mouse_pos = numpy.array(pygame.mouse.get_pos())  # Posição atual do mouse como vetor
                 mouse_pos = mouse_pos - origin
                 self.render_sistem.draw_initial_simulation()
-                self.render_sistem.draw_arrow([0, 255, 0], origin, mouse_pos/numpy.linalg.norm(mouse_pos - origin), 2, 1/10, numpy.linalg.norm(mouse_pos - origin)) # Desenha o vetor que mostra para onde o planeta será lançado
-                pygame.display.flip()
+                pygame.gfxdraw.aacircle(self.render_sistem.screen, int(self.planets[0][0].body.pos[0]/10**3), int(self.planets[0][0].body.pos[1]/10**3), int(radius), [255, 255, 255, 255])
                 
+                if numpy.linalg.norm(mouse_pos)<radius:
+                    # Desenha o vetor que mostra para onde o planeta será lançado
+                    self.render_sistem.draw_arrow([0, 255, 0], origin, mouse_pos/numpy.linalg.norm(mouse_pos), 2, 1/10, numpy.linalg.norm(mouse_pos))
+                else:
+                    self.render_sistem.draw_arrow([0, 255, 0], origin, mouse_pos/numpy.linalg.norm(mouse_pos), 2, 1/10, radius)
+                
+                pygame.display.flip()
+
             released = True
 
-                
-        self.planets[0][0].body.vel = (mouse_pos) * constant # Atualiza a velocidade do planeta
+        if numpy.linalg.norm(mouse_pos)<radius:
+            # Atualiza a velocidade do planeta
+            self.planets[0][0].body.vel = (mouse_pos) * constant 
+        else:
+            self.planets[0][0].body.vel = (mouse_pos/numpy.linalg.norm(mouse_pos)*radius) * constant
                 
         return GameState.SIMULATE

@@ -54,12 +54,9 @@ while game_running:
                 has_drawn_main_menu = True
 
         case GameState.INITIAL_SPEED:
-            print('asd')
             has_drawn_game_over = False
             has_drawn_main_menu = False
-            engine.render_sistem.draw_initial_simulation()
-            pygame.display.flip()
-            current_game_state = engine.initial_speed_calculate(10**2, 100)
+            current_game_state = engine.initial_speed_calculate(500, 100)
 
         case GameState.SIMULATE:
             has_drawn_game_over = False
@@ -100,6 +97,6 @@ while game_running:
 
     clock.tick(1000)
     #Se vc quiserer q ele printe of FPS descomente a linha seguinte
-    print(clock.get_fps())
+    #print(clock.get_fps())
 
 pygame.quit()

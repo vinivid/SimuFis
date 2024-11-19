@@ -19,6 +19,15 @@ class PhysXD:
                     return if_collide
         
         return None
+    
+    def __border_pass(self) -> GameState | None:
+        if self.planets[0][0].body.pos[0]/10**3 < 0 or self.planets[0][0].body.pos[0]/10**3 > 1280:
+            return GameState.GAME_OVER
+        
+        if self.planets[0][0].body.pos[1]/10**3 < 0 or self.planets[0][0].body.pos[1]/10**3 > 720:
+            return GameState.GAME_OVER
+        
+        return None
                 
     #Calcula cada uma das forças que atuam em um corpo especifico colocando o referencial no outro objeto para que não tenhamos que negar o vetor
     #Retorna a acleração resultante das forças que atuam no corpo ou retorna o estado de jogo GAME_OVER se ouve uma colisão
@@ -64,9 +73,13 @@ class PhysXD:
                           ) -> None | GameState:
 
         rect_check = self.__rect_colision_detect(self.planets[0])
+        border_check = self.__border_pass()
 
         if rect_check != None:
             return rect_check
+        
+        if border_check != None:
+            return border_check
 
         for planet in self.planets :
             planet[0].body.pos = planet[0].body.pos + planet[0].body.vel * self.dt + planet[0].body.accel * (self.dt**2 * 0.5)
