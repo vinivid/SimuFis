@@ -88,7 +88,7 @@ class Renderer:
         exit_button = (440, vertical_offset * 2 + 150)
 
         pygame.draw.rect(self.game_over_surface, [0, 255, 0], (continue_button, rectagle_dimensions))
-        pygame.draw.rect(self.game_over_surface, [0, 255, 0], (main_menu_button, rectagle_dimensions))
+        pygame.draw.rect(self.game_over_surface, [0, 0, 255], (main_menu_button, rectagle_dimensions))
         pygame.draw.rect(self.game_over_surface, [255, 0, 0], (exit_button, rectagle_dimensions))
         pygame.gfxdraw.filled_circle(self.game_over_surface, continue_button[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
         pygame.gfxdraw.filled_circle(self.game_over_surface, continue_button[0] + rectagle_dimensions[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
@@ -101,6 +101,40 @@ class Renderer:
         self.game_over_surface.blit(game_over_main_menu_text, (main_menu_button[0] + 7, main_menu_button[1] + 20))
         self.game_over_surface.blit(game_over_exit_text, (exit_button[0] + 140, exit_button[1] + 20))
 
+    def __create_game_win_surface(self) -> None:
+        self.game_win_surface.fill([0, 0, 0])
+
+        game_win_continue_text, _ = self.font.render('Continuar', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_win_retry_text, _ = self.font.render('Tentar Novamente', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_win_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_win_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
+
+        rectagle_dimensions = (400, 100)
+        vertical_offset = 175
+
+        continue_button = (440, 150)
+        retry_button = (440, vertical_offset + 150)
+        main_menu_button = (440, vertical_offset * 2 + 150)
+        exit_button = (440, vertical_offset * 3 + 150)
+
+        pygame.draw.rect(self.game_win_surface, [0, 255, 0], (continue_button, rectagle_dimensions))
+        pygame.draw.rect(self.game_win_surface, [0, 255, 0], (retry_button, rectagle_dimensions))
+        pygame.draw.rect(self.game_win_surface, [0, 0, 255], (main_menu_button, rectagle_dimensions))
+        pygame.draw.rect(self.game_win_surface, [255, 0, 0], (exit_button, rectagle_dimensions))
+        pygame.gfxdraw.filled_circle(self.game_win_surface, continue_button[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_win_surface, continue_button[0] + rectagle_dimensions[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_win_surface, retry_button[0], retry_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_win_surface, retry_button[0] + rectagle_dimensions[0], retry_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_win_surface, main_menu_button[0], main_menu_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_win_surface, main_menu_button[0] + rectagle_dimensions[0], main_menu_button[1] + 50, 50, [0, 255, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_win_surface, exit_button[0], exit_button[1] + 50, 50, [255, 0, 0, 255])
+        pygame.gfxdraw.filled_circle(self.game_win_surface, exit_button[0] + rectagle_dimensions[0], exit_button[1] + 50, 50, [255, 0, 0, 255])
+
+        self.game_win_surface.blit(game_win_continue_text, (continue_button[0] + 85, continue_button[1] + 20))
+        self.game_win_surface.blit(game_win_continue_text, (retry_button[0] + 85, retry_button[1] + 20))
+        self.game_win_surface.blit(game_win_main_menu_text, (main_menu_button[0] + 7, main_menu_button[1] + 20))
+        self.game_win_surface.blit(game_win_exit_text, (exit_button[0] + 140, exit_button[1] + 20))
+
     def __init__(self, screen_heigth : int, screen_width : int,
                  ) -> None:
         
@@ -112,6 +146,9 @@ class Renderer:
 
         self.game_over_surface = pygame.Surface((1280, 720))
         self.__create_game_over_surface()
+
+        self.game_win_surface = pygame.Surface((1280, 720))
+        self.__create_game_win_surface()
     
     #Desenha uma flecha com base numa posição inicial e a direção q ela vai apontar
     #A direção q é o direction vector tem de ser um vetor de norma 1
@@ -201,3 +238,6 @@ class Renderer:
 
     def draw_game_over_menu(self) -> None:
         self.screen.blit(self.game_over_surface, (0,0))
+
+    def draw_game_win_menu(self) -> None:
+        self.screen.blit(self.game_over_surface, (0, 0))

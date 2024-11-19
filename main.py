@@ -30,6 +30,7 @@ clock = pygame.time.Clock()
 #Renderizando o tempo inteiro
 has_drawn_main_menu = False
 has_drawn_game_over = False
+has_drawn_game_win = False
 
 while game_running:
     for event in pygame.event.get():
@@ -39,6 +40,7 @@ while game_running:
     match current_game_state:
         case GameState.MAIN_MENU:
             has_drawn_game_over = False
+            has_drawn_game_win = False
             option_clicked = engine.check_main_menu_click()
         
             if option_clicked != None:
@@ -56,11 +58,13 @@ while game_running:
         case GameState.INITIAL_SPEED:
             has_drawn_game_over = False
             has_drawn_main_menu = False
+            has_drawn_game_win = False
             current_game_state = engine.initial_speed_calculate(500, 100)
 
         case GameState.SIMULATE:
             has_drawn_game_over = False
             has_drawn_main_menu = False
+            has_drawn_game_win = False
             simulation_event = engine.physXD.update()
             engine.render_sistem.draw_simulation()
 
@@ -72,6 +76,7 @@ while game_running:
 
         case GameState.GAME_OVER:
             has_drawn_main_menu = False
+            has_drawn_game_win = False
 
             option_clicked = engine.check_game_over_click()
 
@@ -91,6 +96,14 @@ while game_running:
 
         case GameState.EXIT:
             game_running = False
+
+        case GameState.GAME_WIN:
+            print("banana")
+            has_drawn_game_over = False
+            has_drawn_main_menu = False
+
+            
+
 
         case _:
             print(f"{{'\033[0;31m'}}ERROR::INVALID GAME STATE")
