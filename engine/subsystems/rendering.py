@@ -25,8 +25,12 @@ class Renderer:
     #Por enquanto a cada 240 loops armazena um novo ponto
     qtt_loops = int(0)
     
-    #Primeiramente, pq não criar uma função que faz toda essa parte de desenhar as pilulas e os textos nela? Resposta: Fica muito mais díficil de 
-    #customizar o tamanho e a posição dos textos
+    def __draw_pill(self, surface, color : list, button_position : tuple, dimensions : tuple) -> None:
+        side_circle_radius = dimensions[1] //2
+
+        pygame.draw.rect(surface, color, (button_position, dimensions))
+        pygame.gfxdraw.filled_circle(surface, button_position[0], button_position[1] + side_circle_radius, side_circle_radius, color)
+        pygame.gfxdraw.filled_circle(surface, button_position[0] + dimensions[0], button_position[1] + side_circle_radius, side_circle_radius, color)
 
     #Função que desenha e crie a superfíce do menu prícipal
     def __create_main_menu_surface(self) -> None:
@@ -50,20 +54,10 @@ class Renderer:
         exit_button = (490, vertical_offset * 3 + 250)
 
         #Desenha o retangulo de cada botão
-        pygame.draw.rect(self.main_menu_surface, [0, 255, 0], (start_button, rectagle_dimensions))
-        pygame.draw.rect(self.main_menu_surface, [0, 255, 0], (levels_button, rectagle_dimensions))
-        pygame.draw.rect(self.main_menu_surface, [0, 0, 255], (credits_button, rectagle_dimensions))
-        pygame.draw.rect(self.main_menu_surface, [255, 0, 0], (exit_button, rectagle_dimensions))
-        #Soma o raio do circulo a maior coordenada do retangulo para que o centro da esfera fique exatamente na metade da linha dos cantos do retangulo
-        #Fazendo com que cada botão fique parecendo uma pilula horizontal
-        pygame.gfxdraw.filled_circle(self.main_menu_surface, start_button[0], start_button[1] + side_circle_radius, side_circle_radius, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.main_menu_surface, start_button[0] + rectagle_dimensions[0], start_button[1] + side_circle_radius, side_circle_radius, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.main_menu_surface, levels_button[0], levels_button[1] + side_circle_radius, side_circle_radius, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.main_menu_surface, levels_button[0] + rectagle_dimensions[0], levels_button[1] + side_circle_radius, side_circle_radius, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.main_menu_surface, credits_button[0], credits_button[1] + side_circle_radius, side_circle_radius, [0, 0, 255, 255])
-        pygame.gfxdraw.filled_circle(self.main_menu_surface, credits_button[0] + rectagle_dimensions[0], credits_button[1] + side_circle_radius, side_circle_radius, [0, 0, 255, 255])
-        pygame.gfxdraw.filled_circle(self.main_menu_surface, exit_button[0], exit_button[1] + side_circle_radius, side_circle_radius, [255, 0, 0, 255])
-        pygame.gfxdraw.filled_circle(self.main_menu_surface, exit_button[0] + rectagle_dimensions[0], exit_button[1] + side_circle_radius, side_circle_radius, [255, 0, 0, 255])
+        self.__draw_pill(self.main_menu_surface, [0, 255, 0], start_button, rectagle_dimensions)
+        self.__draw_pill(self.main_menu_surface, [0, 255, 0], levels_button, rectagle_dimensions)
+        self.__draw_pill(self.main_menu_surface, [0, 0, 255], credits_button, rectagle_dimensions)
+        self.__draw_pill(self.main_menu_surface, [255, 0, 0], exit_button, rectagle_dimensions)
 
         #Desenha o texto na superfíce do titulo prícipal
         self.main_menu_surface.blit(main_menu_title, (370, 100))
@@ -87,15 +81,9 @@ class Renderer:
         main_menu_button = (440, vertical_offset + 150)
         exit_button = (440, vertical_offset * 2 + 150)
 
-        pygame.draw.rect(self.game_over_surface, [0, 255, 0], (continue_button, rectagle_dimensions))
-        pygame.draw.rect(self.game_over_surface, [0, 0, 255], (main_menu_button, rectagle_dimensions))
-        pygame.draw.rect(self.game_over_surface, [255, 0, 0], (exit_button, rectagle_dimensions))
-        pygame.gfxdraw.filled_circle(self.game_over_surface, continue_button[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_over_surface, continue_button[0] + rectagle_dimensions[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_over_surface, main_menu_button[0], main_menu_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_over_surface, main_menu_button[0] + rectagle_dimensions[0], main_menu_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_over_surface, exit_button[0], exit_button[1] + 50, 50, [255, 0, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_over_surface, exit_button[0] + rectagle_dimensions[0], exit_button[1] + 50, 50, [255, 0, 0, 255])
+        self.__draw_pill(self.game_over_surface, [0, 255, 0], continue_button, rectagle_dimensions)
+        self.__draw_pill(self.game_over_surface, [0, 255, 0], main_menu_button, rectagle_dimensions)
+        self.__draw_pill(self.game_over_surface, [255, 0, 0], exit_button, rectagle_dimensions)
 
         self.game_over_surface.blit(game_over_continue_text, (continue_button[0] + 85, continue_button[1] + 20))
         self.game_over_surface.blit(game_over_main_menu_text, (main_menu_button[0] + 7, main_menu_button[1] + 20))
@@ -117,18 +105,10 @@ class Renderer:
         main_menu_button = (440, vertical_offset * 2 + 150)
         exit_button = (440, vertical_offset * 3 + 150)
 
-        pygame.draw.rect(self.game_win_surface, [0, 255, 0], (continue_button, rectagle_dimensions))
-        pygame.draw.rect(self.game_win_surface, [0, 255, 0], (retry_button, rectagle_dimensions))
-        pygame.draw.rect(self.game_win_surface, [0, 0, 255], (main_menu_button, rectagle_dimensions))
-        pygame.draw.rect(self.game_win_surface, [255, 0, 0], (exit_button, rectagle_dimensions))
-        pygame.gfxdraw.filled_circle(self.game_win_surface, continue_button[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_win_surface, continue_button[0] + rectagle_dimensions[0], continue_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_win_surface, retry_button[0], retry_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_win_surface, retry_button[0] + rectagle_dimensions[0], retry_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_win_surface, main_menu_button[0], main_menu_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_win_surface, main_menu_button[0] + rectagle_dimensions[0], main_menu_button[1] + 50, 50, [0, 255, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_win_surface, exit_button[0], exit_button[1] + 50, 50, [255, 0, 0, 255])
-        pygame.gfxdraw.filled_circle(self.game_win_surface, exit_button[0] + rectagle_dimensions[0], exit_button[1] + 50, 50, [255, 0, 0, 255])
+        self.__draw_pill(self.game_win_surface, [0, 255, 0], continue_button, rectagle_dimensions)
+        self.__draw_pill(self.game_win_surface, [0, 255, 0], retry_button, rectagle_dimensions)
+        self.__draw_pill(self.game_win_surface, [0, 0, 255], main_menu_button, rectagle_dimensions)
+        self.__draw_pill(self.game_win_surface, [255, 0, 0], exit_button, rectagle_dimensions)
 
         self.game_win_surface.blit(game_win_continue_text, (continue_button[0] + 85, continue_button[1] + 20))
         self.game_win_surface.blit(game_win_continue_text, (retry_button[0] + 85, retry_button[1] + 20))
