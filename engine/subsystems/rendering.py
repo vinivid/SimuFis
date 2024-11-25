@@ -92,28 +92,61 @@ class Renderer:
     def __create_game_win_surface(self) -> None:
         self.game_win_surface.fill([0, 0, 0])
 
-        game_win_continue_text, _ = self.font.render('Continuar', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_win_continue_text, _ = self.font.render('Próximo', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_retry_text, _ = self.font.render('Tentar Novamente', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
 
-        rectagle_dimensions = (400, 100)
-        vertical_offset = 175
+        rectagle_dimensions = (500, 80)
+        vertical_offset = 120
 
-        continue_button = (440, 150)
-        retry_button = (440, vertical_offset + 150)
-        main_menu_button = (440, vertical_offset * 2 + 150)
-        exit_button = (440, vertical_offset * 3 + 150)
+        continue_button = (370, 150)
+        retry_button = (370, vertical_offset + 150)
+        main_menu_button = (370, vertical_offset * 2 + 150)
+        exit_button = (370, vertical_offset * 3 + 150)
 
         self.__draw_pill(self.game_win_surface, [0, 255, 0], continue_button, rectagle_dimensions)
         self.__draw_pill(self.game_win_surface, [0, 255, 0], retry_button, rectagle_dimensions)
         self.__draw_pill(self.game_win_surface, [0, 0, 255], main_menu_button, rectagle_dimensions)
         self.__draw_pill(self.game_win_surface, [255, 0, 0], exit_button, rectagle_dimensions)
 
-        self.game_win_surface.blit(game_win_continue_text, (continue_button[0] + 85, continue_button[1] + 20))
-        self.game_win_surface.blit(game_win_continue_text, (retry_button[0] + 85, retry_button[1] + 20))
-        self.game_win_surface.blit(game_win_main_menu_text, (main_menu_button[0] + 7, main_menu_button[1] + 20))
-        self.game_win_surface.blit(game_win_exit_text, (exit_button[0] + 140, exit_button[1] + 20))
+        self.game_win_surface.blit(game_win_continue_text, (continue_button[0] + 150, continue_button[1] + 15))
+        self.game_win_surface.blit(game_win_retry_text, (retry_button[0] + 10, retry_button[1] + 15))
+        self.game_win_surface.blit(game_win_main_menu_text, (main_menu_button[0] + 70, main_menu_button[1] + 15))
+        self.game_win_surface.blit(game_win_exit_text, (exit_button[0] + 200, exit_button[1] + 15))
+
+    def __create_level_select_surface(self):
+        self.level_select_surface.fill([0, 0, 0])
+
+        level_1, _ = self.font.render('1', fgcolor=None, bgcolor=None, rotation=0, size=120)
+        level_2, _ = self.font.render('2', fgcolor=None, bgcolor=None, rotation=0, size=120)
+        level_3, _ = self.font.render('3', fgcolor=None, bgcolor=None, rotation=0, size=120) 
+        level_4, _ = self.font.render('4', fgcolor=None, bgcolor=None, rotation=0, size=120)
+        level_5, _ = self.font.render('5', fgcolor=None, bgcolor=None, rotation=0, size=120)
+
+        #1280 / 5 = 256
+
+        rectagle_dimensions = (200, 200)
+        horizontal_offset = 230
+
+        button_1 = (75, 220)
+        button_2 = (horizontal_offset + 75, 220)
+        button_3 = (horizontal_offset * 2 + 75, 220)
+        button_4 = (horizontal_offset * 3 + 75, 220)
+        button_5 = (horizontal_offset * 4 + 75, 220)
+
+        pygame.draw.rect(self.level_select_surface, [0, 255, 0], (button_1, rectagle_dimensions))
+        pygame.draw.rect(self.level_select_surface, [0, 255, 0], (button_2, rectagle_dimensions))
+        pygame.draw.rect(self.level_select_surface, [0, 255, 0], (button_3, rectagle_dimensions))
+        pygame.draw.rect(self.level_select_surface, [0, 255, 0], (button_4, rectagle_dimensions))
+        pygame.draw.rect(self.level_select_surface, [0, 255, 0], (button_5, rectagle_dimensions))
+
+        self.level_select_surface.blit(level_1, (button_1[0] + 65, 265))
+        self.level_select_surface.blit(level_2, (button_2[0] + 65, 265))
+        self.level_select_surface.blit(level_3, (button_3[0] + 65, 265))
+        self.level_select_surface.blit(level_4, (button_4[0] + 65, 265))
+        self.level_select_surface.blit(level_5, (button_5[0] + 65, 265))
+
 
     def __init__(self, screen_heigth : int, screen_width : int,
                  ) -> None:
@@ -129,6 +162,9 @@ class Renderer:
 
         self.game_win_surface = pygame.Surface((1280, 720))
         self.__create_game_win_surface()
+
+        self.level_select_surface = pygame.Surface((1280, 720))
+        self.__create_level_select_surface()
     
     #Desenha uma flecha com base numa posição inicial e a direção q ela vai apontar
     #A direção q é o direction vector tem de ser um vetor de norma 1
@@ -220,4 +256,7 @@ class Renderer:
         self.screen.blit(self.game_over_surface, (0,0))
 
     def draw_game_win_menu(self) -> None:
-        self.screen.blit(self.game_over_surface, (0, 0))
+        self.screen.blit(self.game_win_surface, (0, 0))
+
+    def draw_level_screen(self) -> None:
+        self.screen.blit(self.level_select_surface, (0, 0))

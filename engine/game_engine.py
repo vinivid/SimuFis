@@ -9,6 +9,13 @@ class GameEngine:
     planets = list[list[Planet, int]]()
     rect_objs = list[RectObstacle]()
 
+    #inteiro que representa o raio do circulo que delimita o máximo que player pode jogar
+    throw_radius_constant = int(100)
+    #É um fator constante que determina a velociadade que sera jogado o planeta
+    throw_velocity_constant = int(500)
+
+    current_level = int(1)
+
     def __init__(self) -> None:
         pygame.init()
         self.physXD = PhysXD()
@@ -54,6 +61,9 @@ class GameEngine:
     #Transforma os objetos que foi colocados até agora em um nível.
     def to_level(self, level_number : int) -> None:
         with open(f'./engine/levels/{level_number}.lv', 'w') as lv:
+            lv.write(f'rc {self.throw_radius_constant}\n')
+            lv.write(f'vc {self.throw_velocity_constant}\n')
+
             for planet in self.planets:
                 #Simplesmente escreve todos os dados do planeta do nível que vc tinha criado
                 lv.write(f'planet {planet[0].body.mass/10**3} {planet[0].body.pos[0]/10**3} {planet[0].body.pos[1]/10**3} {planet[0].body.vel[0]} {planet[0].body.vel[1]} {planet[0].body.accel[0]} {planet[0].body.accel[1]} {planet[0].planet_radius} {planet[0].color[0]} {planet[0].color[1]} {planet[0].color[2]} {planet[0].color[3]}\n')
@@ -70,8 +80,14 @@ class GameEngine:
             #Cada linha vai conter os dados de um planeta/rect em que a primeira palavra ira indicar se é um planeta ou um rect
             for line in lv:
                 data = line.split()
+                
+                if data[0] == 'rc':
+                    self.throw_radius_constant = int(data[1])
+                
+                elif data[0] == 'vc':
+                    self.throw_velocity_constant = int(data[1])
 
-                if data[0] == 'planet':
+                elif data[0] == 'planet':
                     #Coloca manualmente os dados do planeta e adiciona ele
                     planet_to_add = Planet(float(data[1]), [float(data[2]), float(data[3])], [float(data[4]), float(data[5])], [float(data[6]), float(data[7])], float(data[8]), [int(data[9], 10), int(data[10], 10), int(data[11], 10), int(data[12], 10)])
                     self.add_planet(planet_to_add)
@@ -137,14 +153,68 @@ class GameEngine:
             return GameState.EXIT
         else:
             return None
+    
+    def check_game_win_click(self) -> GameState | None: 
+        rectagle_dimensions = (500, 80)
+        vertical_offset = 120
+
+        start_button = (370, 150)
+        levels_button = (370, vertical_offset + 150)
+        credits_button = (370, vertical_offset * 2 + 150)
+        exit_button = (370, vertical_offset * 3 + 150)
+
+        check_button_1 = self.__check_rect_click(start_button, rectagle_dimensions)
+        check_button_2 = self.__check_rect_click(levels_button, rectagle_dimensions)
+        check_button_3 = self.__check_rect_click(credits_button, rectagle_dimensions)
+        check_button_4 = self.__check_rect_click(exit_button, rectagle_dimensions)
+
+        if check_button_1:
+            return GameState.START
+        elif check_button_2:
+            return GameState.LEVEL_SELECT
+        elif check_button_3:
+            return GameState.MAIN_MENU
+        elif check_button_4:
+            return GameState.EXIT
+        else:
+            return None
+        
+    def check_select_level(self) -> int | None:
+        rectagle_dimensions = (200, 200)
+        horizontal_offset = 230
+
+        button_1 = (75, 220)
+        button_2 = (horizontal_offset + 75, 220)
+        button_3 = (horizontal_offset * 2 + 75, 220)
+        button_4 = (horizontal_offset * 3 + 75, 220)
+        button_5 = (horizontal_offset * 4 + 75, 220)
+
+        check_button_1 = self.__check_rect_click(button_1, rectagle_dimensions)
+        check_button_2 = self.__check_rect_click(button_2, rectagle_dimensions)
+        check_button_3 = self.__check_rect_click(button_3, rectagle_dimensions)
+        check_button_4 = self.__check_rect_click(button_4, rectagle_dimensions)
+        check_button_5 = self.__check_rect_click(button_5, rectagle_dimensions)
+
+        if check_button_1:
+            return 1
+        elif check_button_2:
+            return 2
+        elif check_button_3:
+            return 3
+        elif check_button_4:
+            return 4
+        elif check_button_5:
+            return 5
+        else:
+            return None
         
     # Calcula a velocidade incial do planeta principal com base na posição do mouse
-    def initial_speed_calculate(self, constant, radius):
+    def initial_speed_calculate(self):
         released = False
         origin = self.planets[0][0].body.pos/10**3
         self.render_sistem.draw_initial_simulation()
-        pygame.gfxdraw.aacircle(self.render_sistem.screen, int(self.planets[0][0].body.pos[0]/10**3), int(self.planets[0][0].body.pos[1]/10**3), int(radius), [255, 255, 255, 255])
-        pygame.display.flip()    
+        pygame.gfxdraw.aacircle(self.render_sistem.screen, int(self.planets[0][0].body.pos[0]/10**3), int(self.planets[0][0].body.pos[1]/10**3), int(self.throw_radius_constant), [255, 255, 255, 255])
+        pygame.display.flip()
 
         while released == False:
             pygame.event.pump()
@@ -161,22 +231,22 @@ class GameEngine:
                 mouse_pos = numpy.array(pygame.mouse.get_pos())  # Posição atual do mouse como vetor
                 mouse_pos = mouse_pos - origin
                 self.render_sistem.draw_initial_simulation()
-                pygame.gfxdraw.aacircle(self.render_sistem.screen, int(self.planets[0][0].body.pos[0]/10**3), int(self.planets[0][0].body.pos[1]/10**3), int(radius), [255, 255, 255, 255])
+                pygame.gfxdraw.aacircle(self.render_sistem.screen, int(self.planets[0][0].body.pos[0]/10**3), int(self.planets[0][0].body.pos[1]/10**3), int(self.throw_radius_constant), [255, 255, 255, 255])
                 
-                if numpy.linalg.norm(mouse_pos)<radius:
+                if numpy.linalg.norm(mouse_pos) < self.throw_radius_constant:
                     # Desenha o vetor que mostra para onde o planeta será lançado
                     self.render_sistem.draw_arrow([0, 255, 0], origin, mouse_pos/numpy.linalg.norm(mouse_pos), 2, 1/10, numpy.linalg.norm(mouse_pos))
                 else:
-                    self.render_sistem.draw_arrow([0, 255, 0], origin, mouse_pos/numpy.linalg.norm(mouse_pos), 2, 1/10, radius)
+                    self.render_sistem.draw_arrow([0, 255, 0], origin, mouse_pos/numpy.linalg.norm(mouse_pos), 2, 1/10, self.throw_radius_constant)
                 
                 pygame.display.flip()
 
             released = True
 
-        if numpy.linalg.norm(mouse_pos)<radius:
+        if numpy.linalg.norm(mouse_pos) < self.throw_radius_constant:
             # Atualiza a velocidade do planeta
-            self.planets[0][0].body.vel = (mouse_pos) * constant 
+            self.planets[0][0].body.vel = (mouse_pos) * self.throw_velocity_constant 
         else:
-            self.planets[0][0].body.vel = (mouse_pos/numpy.linalg.norm(mouse_pos)*radius) * constant
+            self.planets[0][0].body.vel = (mouse_pos/numpy.linalg.norm(mouse_pos) * self.throw_radius_constant) * self.throw_velocity_constant
                 
         return GameState.SIMULATE
