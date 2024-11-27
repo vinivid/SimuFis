@@ -162,17 +162,19 @@ class GameEngine:
     
     def check_game_win_click(self) -> GameState | None: 
         rectagle_dimensions = (500, 80)
-        vertical_offset = 120
+        vertical_offset = 100
 
-        start_button = (370, 150)
-        levels_button = (370, vertical_offset + 150)
-        credits_button = (370, vertical_offset * 2 + 150)
-        exit_button = (370, vertical_offset * 3 + 150)
+        continue_button = (370, 170)
+        retry_button = (370, vertical_offset + 170)
+        plot_button = (370, vertical_offset * 2 + 170)
+        main_menu_button = (370, vertical_offset * 3 + 170)
+        exit_button = (370, vertical_offset * 4 + 170)
 
-        check_button_1 = self.__check_rect_click(start_button, rectagle_dimensions)
-        check_button_2 = self.__check_rect_click(levels_button, rectagle_dimensions)
-        check_button_3 = self.__check_rect_click(credits_button, rectagle_dimensions)
-        check_button_4 = self.__check_rect_click(exit_button, rectagle_dimensions)
+        check_button_1 = self.__check_rect_click(continue_button, rectagle_dimensions)
+        check_button_2 = self.__check_rect_click(retry_button, rectagle_dimensions)
+        check_button_3 = self.__check_rect_click(plot_button, rectagle_dimensions)
+        check_button_4 = self.__check_rect_click(main_menu_button, rectagle_dimensions)
+        check_button_5 = self.__check_rect_click(exit_button, rectagle_dimensions)
 
         if check_button_1:
             return GameState.START
@@ -181,6 +183,8 @@ class GameEngine:
         elif check_button_3:
             return GameState.MAIN_MENU
         elif check_button_4:
+            return GameState.PLOT
+        elif check_button_5:
             return GameState.EXIT
         else:
             return None

@@ -174,7 +174,10 @@ while game_running:
                 has_drawn_game_win = True
 
             if option_clicked != None:
-                current_game_state = option_clicked
+                if option_clicked == GameState.PLOT:
+                    engine.plot_energies()
+                else:
+                    current_game_state = option_clicked
 
                 #Vai para o próximo nível somente se o próximo nível não for o 6, se n retorna para o 1
                 if current_game_state == GameState.START:
