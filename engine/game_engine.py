@@ -137,21 +137,25 @@ class GameEngine:
     #Checa qual botão foi clicado na tela de game over
     def check_game_over_click(self) -> GameState | None:
         rectagle_dimensions = (400, 100)
-        vertical_offset = 175
+        vertical_offset = 135
 
         continue_button = (440, 150)
         main_menu_button = (440, vertical_offset + 150)
-        exit_button = (440, vertical_offset * 2 + 150)
+        plot_button = (440, vertical_offset * 2 + 150)
+        exit_button = (440, vertical_offset * 3 + 150)
 
         check_button_1 = self.__check_rect_click(continue_button, rectagle_dimensions)
         check_button_2 = self.__check_rect_click(main_menu_button, rectagle_dimensions)
-        check_button_3 = self.__check_rect_click(exit_button, rectagle_dimensions)
+        check_button_3 = self.__check_rect_click(plot_button, rectagle_dimensions)
+        check_button_4 = self.__check_rect_click(exit_button, rectagle_dimensions)
 
         if check_button_1:
             return GameState.INITIAL_SPEED
         elif check_button_2:
             return GameState.MAIN_MENU
         elif check_button_3:
+            return GameState.PLOT
+        elif check_button_4:
             return GameState.EXIT
         else:
             return None
@@ -255,22 +259,8 @@ class GameEngine:
     
     def plot_energies(self) -> None:
         fig, ax = plt.subplots()
-        enenpot = ax.plot(self.physXD.discrete_sim_line, self.physXD.epg, label=f'Energia potêncial gravitacional')[0]
-        enencin = ax.plot(self.physXD.discrete_sim_line, self.physXD.ecin, label=f'Energia cinética')[0]
+        ax.plot(self.physXD.discrete_sim_line, self.physXD.epg, label=f'Energia potêncial gravitacional')[0]
+        ax.plot(self.physXD.discrete_sim_line, self.physXD.ecin, label=f'Energia cinética')[0]
         ax.set(xlabel='Frame da simulação', ylabel='Energias')
         ax.legend()
-
-        def update(frame):
-            x = self.physXD.discrete_sim_line[:frame]
-            epg = self.physXD.epg[:frame]
-            ecin = self.physXD.ecin[:frame]
-
-            enenpot.set_xdata(x)
-            enenpot.set_ydata(epg[:frame])
-            enencin.set_xdata(x)
-            enencin.set_ydata(ecin[:frame])
-
-            return enenpot, enencin
-
-        ani = animation.FuncAnimation(fig=fig, func=update, frames=self.physXD.qtt_loops, interval=30)
         plt.show()

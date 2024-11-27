@@ -74,20 +74,25 @@ class Renderer:
         game_over_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_over_plot, _ = self.font.render('Plotar Energia', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_over_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_over_text, _ = self.font.render('Game Over', fgcolor=[255,255,255], bgcolor=None, rotation=0, size=120)
 
         rectagle_dimensions = (400, 100)
-        vertical_offset = 175
+        vertical_offset = 135
 
         continue_button = (440, 150)
         main_menu_button = (440, vertical_offset + 150)
-        exit_button = (440, vertical_offset * 2 + 150)
+        plot_button = (440, vertical_offset * 2 + 150)
+        exit_button = (440, vertical_offset * 3 + 150)
 
         self.__draw_pill(self.game_over_surface, [0, 255, 0], continue_button, rectagle_dimensions)
         self.__draw_pill(self.game_over_surface, [0, 255, 0], main_menu_button, rectagle_dimensions)
+        self.__draw_pill(self.game_over_surface, [0, 0, 255], plot_button, rectagle_dimensions)
         self.__draw_pill(self.game_over_surface, [255, 0, 0], exit_button, rectagle_dimensions)
 
+        self.game_over_surface.blit(game_over_text, (continue_button[0] - 80, continue_button[1] - 120))
         self.game_over_surface.blit(game_over_continue_text, (continue_button[0] + 85, continue_button[1] + 20))
         self.game_over_surface.blit(game_over_main_menu_text, (main_menu_button[0] + 7, main_menu_button[1] + 20))
+        self.game_over_surface.blit(game_over_plot, (plot_button[0] + 10, plot_button[1] + 20))
         self.game_over_surface.blit(game_over_exit_text, (exit_button[0] + 140, exit_button[1] + 20))
 
     def __create_game_win_surface(self) -> None:
@@ -96,23 +101,29 @@ class Renderer:
         game_win_continue_text, _ = self.font.render('Próximo', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_retry_text, _ = self.font.render('Tentar Novamente', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_win_plot_text, _ = self.font.render('Plotar Energia', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_win_text, _ = self.font.render('Vitória', fgcolor=[255, 255, 255], bgcolor=None, rotation=0, size=120)
 
         rectagle_dimensions = (500, 80)
-        vertical_offset = 120
+        vertical_offset = 100
 
-        continue_button = (370, 150)
-        retry_button = (370, vertical_offset + 150)
-        main_menu_button = (370, vertical_offset * 2 + 150)
-        exit_button = (370, vertical_offset * 3 + 150)
+        continue_button = (370, 170)
+        retry_button = (370, vertical_offset + 170)
+        plot_button = (370, vertical_offset * 2 + 170)
+        main_menu_button = (370, vertical_offset * 3 + 170)
+        exit_button = (370, vertical_offset * 4 + 170)
 
         self.__draw_pill(self.game_win_surface, [0, 255, 0], continue_button, rectagle_dimensions)
         self.__draw_pill(self.game_win_surface, [0, 255, 0], retry_button, rectagle_dimensions)
+        self.__draw_pill(self.game_win_surface, [0, 0, 255], plot_button, rectagle_dimensions)
         self.__draw_pill(self.game_win_surface, [0, 0, 255], main_menu_button, rectagle_dimensions)
         self.__draw_pill(self.game_win_surface, [255, 0, 0], exit_button, rectagle_dimensions)
 
+        self.game_win_surface.blit(game_win_text, (continue_button[0] + 80, continue_button[1] - 150))
         self.game_win_surface.blit(game_win_continue_text, (continue_button[0] + 150, continue_button[1] + 15))
         self.game_win_surface.blit(game_win_retry_text, (retry_button[0] + 10, retry_button[1] + 15))
+        self.game_win_surface.blit(game_win_plot_text, (plot_button[0] + 75, plot_button[1] + 15))
         self.game_win_surface.blit(game_win_main_menu_text, (main_menu_button[0] + 70, main_menu_button[1] + 15))
         self.game_win_surface.blit(game_win_exit_text, (exit_button[0] + 200, exit_button[1] + 15))
 
@@ -147,7 +158,6 @@ class Renderer:
         self.level_select_surface.blit(level_3, (button_3[0] + 65, 265))
         self.level_select_surface.blit(level_4, (button_4[0] + 65, 265))
         self.level_select_surface.blit(level_5, (button_5[0] + 65, 265))
-
 
     def __init__(self, screen_heigth : int, screen_width : int,
                  ) -> None:

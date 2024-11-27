@@ -90,6 +90,8 @@ while game_running:
             has_pumped_level = False
             engine.physXD.ecin.clear()
             engine.physXD.epg.clear()
+            engine.physXD.discrete_sim_line.clear()
+            engine.physXD.qtt_loops = 0
             current_game_state = engine.initial_speed_calculate()
 
         case GameState.SIMULATE:
@@ -118,7 +120,10 @@ while game_running:
             option_clicked = engine.check_game_over_click()
 
             if option_clicked != None:
-                current_game_state = option_clicked
+                if option_clicked == GameState.PLOT:
+                    engine.plot_energies()
+                else:
+                    current_game_state = option_clicked
                 
                 if option_clicked == GameState.INITIAL_SPEED:
                     engine.load_level(engine.current_level)
@@ -128,7 +133,6 @@ while game_running:
                 pygame.display.flip()
                 has_drawn_game_over = True
             
-            engine.plot_energies()
 
         case GameState.LEVEL_SELECT:
             has_drawn_main_menu = False
@@ -143,7 +147,7 @@ while game_running:
             if not has_pumped_level:
                 for i in range (0, 400000):
                     pygame.event.pump()
-                has_pumped = True
+                has_pumped_level = True
 
             #Muda para o nível se algum nível foi selecionado
             level_selected = engine.check_select_level()
@@ -178,6 +182,10 @@ while game_running:
                         engine.current_level = engine.current_level + 1
                     else:
                         engine.current_level = 1
+
+                elif current_game_state == GameState.LEVEL_SELECT:
+                    current_game_state = GameState.START
+                    
             
         case _:
             print(f"{{'\033[0;31m'}}ERROR::INVALID GAME STATE")

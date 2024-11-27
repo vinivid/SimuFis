@@ -7,7 +7,7 @@ WIN_RECTANGLE = 1
 LOSE_RECTANGLE = 0
 
 class GameState(Enum):
-    #O start é especial pq ele só é usado no menu principal para começar des do nível 1
+    PLOT = -4
     CREDITS = -2
     START = -1
     MAIN_MENU = 0

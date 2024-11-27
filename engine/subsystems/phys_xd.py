@@ -45,6 +45,9 @@ class PhysXD:
         #Acumular as forças que são calculadas para representar a resultante
         acumulate_forces = numpy.zeros(2)
 
+        #Acumula a energia potencial gravitacional para um planeta
+        epg_val = 0
+
         for plt in self.planets:
             if plt[1] == planet[1] :
                 continue
@@ -63,7 +66,7 @@ class PhysXD:
 
             #Adiciona a energia potencial gravitacional no planeta principal
             if planet[1] == 0:
-                self.epg.append(MGm/absolute_distance)
+                epg_val += MGm/absolute_distance
 
             x_projection = force_norm * ( (plt[0].body.pos[0] - planet[0].body.pos[0] )/absolute_distance)
             y_projection = force_norm * ( (plt[0].body.pos[1] - planet[0].body.pos[1] )/absolute_distance)
@@ -72,6 +75,9 @@ class PhysXD:
             acumulate_forces[1] += y_projection
         
         #segunda lei de newton
+        if planet[1] == 0:
+            self.epg.append(epg_val)
+
         return acumulate_forces/planet[0].body.mass, False
 
     #O que esta escrito abaixo vem do método de integrar de Verlet
