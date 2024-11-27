@@ -9,8 +9,8 @@ WIN_RECTANGLE = 1
 LOSE_RECTANGLE = 0
 
 engine = GameEngine()
-engine.player_throw_velocity_constant = 500
-engine.player_throw_radius_constant = 100
+engine.throw_velocity_constant = 500
+engine.throw_radius_constant = 100
 #O primeiro planeta vai ser tratado como principal e ele sempre sera o planeta com id/index 0
 #planet1 = Planet(80, [400, 500], [0, 0], [0, 0], 5.0, [255, 0, 0, 255])
 #planet2 = Planet(8*10**20, [600, 400], [0, 0], [0, 0], 5.0, [0, 0, 255, 255])
@@ -88,6 +88,8 @@ while game_running:
             has_drawn_main_menu = False
             has_drawn_game_win = False
             has_pumped_level = False
+            engine.physXD.ecin.clear()
+            engine.physXD.epg.clear()
             current_game_state = engine.initial_speed_calculate()
 
         case GameState.SIMULATE:
@@ -125,6 +127,8 @@ while game_running:
                 engine.render_sistem.draw_game_over_menu()
                 pygame.display.flip()
                 has_drawn_game_over = True
+            
+            engine.plot_energies()
 
         case GameState.LEVEL_SELECT:
             has_drawn_main_menu = False

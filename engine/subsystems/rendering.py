@@ -72,6 +72,7 @@ class Renderer:
 
         game_over_continue_text, _ = self.font.render('Continuar', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_over_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_over_plot, _ = self.font.render('Plotar Energia', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_over_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
 
         rectagle_dimensions = (400, 100)

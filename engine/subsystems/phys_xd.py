@@ -9,6 +9,14 @@ class PhysXD:
     planets = list[list[Planet, int]]()
     rect_objs = list[RectObstacle]()
 
+    #Lista que salva a energia potencial gravitacional do corpo
+    epg = list[numpy.floating]()
+    ecin = list[numpy.floating]()
+
+    #Quantiddade de vezes que fora calculado as velocidades e uma linha discreta deles
+    qtt_loops = int(0)
+    discrete_sim_line = list[int]()
+
     #Checa se o planeta pricipal esta dentro de alguma area não permitida
     def __rect_colision_detect(self, planet : list[Planet, int]) -> GameState | None:
         if planet[1] == 0:
@@ -50,7 +58,12 @@ class PhysXD:
             if absolute_distance/10**3 < planet[0].planet_radius + plt[0].planet_radius:
                 return absolute_distance, True
 
-            force_norm = (constants.G * planet[0].body.mass * plt[0].body.mass) / absolute_distance ** 2
+            MGm = (constants.G * planet[0].body.mass * plt[0].body.mass)
+            force_norm = MGm / absolute_distance ** 2
+
+            #Adiciona a energia potencial gravitacional no planeta principal
+            if planet[1] == 0:
+                self.epg.append(MGm/absolute_distance)
 
             x_projection = force_norm * ( (plt[0].body.pos[0] - planet[0].body.pos[0] )/absolute_distance)
             y_projection = force_norm * ( (plt[0].body.pos[1] - planet[0].body.pos[1] )/absolute_distance)
@@ -67,8 +80,6 @@ class PhysXD:
     #Agora as razões matematicas do pq ele é bom são as seguintes: Ele tem revesiabilidade no tempo (ok) e preserva a forma sympletica no espaço das fases (O quwe isso significa 
     # na nossa simulação é que ele não fode com a energia do sistema, matematicamente isso tem relação com manifolds e outras coisas q eu n tenho conhecimento)
     #Ele simplesmente é melhor que o metodo de euler de integração em todos os aspectos (outros como RK4 não mantém a enegia do sistema o q fode coisas relacionadas a campos), lógo usar ele
-    #Também tem o método de leapfrog só q ele é goofy
-    #TODO: Explicar esse algoritimo e a teoria no relatório
     def __velocity_verlet(self
                           ) -> None | GameState:
 
@@ -91,6 +102,12 @@ class PhysXD:
             
             planet[0].body.vel = planet[0].body.vel + (planet[0].body.accel + n_accel) * (self.dt*0.5)
             planet[0].body.accel = n_accel
+        
+        #Adiciona a energia cínetica do planeta principal 
+        self.ecin.append((numpy.linalg.norm(self.planets[0][0].body.vel)**2 * self.planets[0][0].body.mass)/2)
+
+        self.discrete_sim_line.append(self.qtt_loops)
+        self.qtt_loops += 1
 
     #Simula a física do jogo por um pass
     #Retorna game over se algum planeta colidir (pode ser qualquer planeta, não apenas o player) ou se o planeta player for em um retangulo de perda

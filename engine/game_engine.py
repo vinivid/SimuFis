@@ -1,6 +1,8 @@
 from .subsystems.objs import *
 from .subsystems.phys_xd import *
 from .subsystems.rendering import *
+from matplotlib import pyplot as plt
+import matplotlib.animation as animation
 
 class GameEngine:
     #não é necessario essa lista, mas se acabar sendo necessario ela esta aqui
@@ -250,3 +252,25 @@ class GameEngine:
             self.planets[0][0].body.vel = (mouse_pos/numpy.linalg.norm(mouse_pos) * self.throw_radius_constant) * self.throw_velocity_constant
                 
         return GameState.SIMULATE
+    
+    def plot_energies(self) -> None:
+        fig, ax = plt.subplots()
+        enenpot = ax.plot(self.physXD.discrete_sim_line, self.physXD.epg, label=f'Energia potêncial gravitacional')[0]
+        enencin = ax.plot(self.physXD.discrete_sim_line, self.physXD.ecin, label=f'Energia cinética')[0]
+        ax.set(xlabel='Frame da simulação', ylabel='Energias')
+        ax.legend()
+
+        def update(frame):
+            x = self.physXD.discrete_sim_line[:frame]
+            epg = self.physXD.epg[:frame]
+            ecin = self.physXD.ecin[:frame]
+
+            enenpot.set_xdata(x)
+            enenpot.set_ydata(epg[:frame])
+            enencin.set_xdata(x)
+            enencin.set_ydata(ecin[:frame])
+
+            return enenpot, enencin
+
+        ani = animation.FuncAnimation(fig=fig, func=update, frames=self.physXD.qtt_loops, interval=30)
+        plt.show()
