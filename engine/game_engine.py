@@ -181,9 +181,9 @@ class GameEngine:
         elif check_button_2:
             return GameState.LEVEL_SELECT
         elif check_button_3:
-            return GameState.MAIN_MENU
-        elif check_button_4:
             return GameState.PLOT
+        elif check_button_4:
+            return GameState.MAIN_MENU
         elif check_button_5:
             return GameState.EXIT
         else:
