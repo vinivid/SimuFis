@@ -2,7 +2,6 @@ from .subsystems.objs import *
 from .subsystems.phys_xd import *
 from .subsystems.rendering import *
 from matplotlib import pyplot as plt
-import matplotlib.animation as animation
 
 class GameEngine:
     #não é necessario essa lista, mas se acabar sendo necessario ela esta aqui
@@ -262,9 +261,11 @@ class GameEngine:
         return GameState.SIMULATE
     
     def plot_energies(self) -> None:
-        fig, ax = plt.subplots()
-        ax.plot(self.physXD.discrete_sim_line, self.physXD.epg, label=f'Energia potêncial gravitacional')[0]
-        ax.plot(self.physXD.discrete_sim_line, self.physXD.ecin, label=f'Energia cinética')[0]
-        ax.set(xlabel='Frame da simulação', ylabel='Energias')
-        ax.legend()
+        fig, ax = plt.subplots(1, 2, figsize=(14, 6))
+        ax[0].plot(self.physXD.discrete_sim_line, self.physXD.ecin, label=f'Energia cinética')
+        ax[0].set(xlabel='Frame da simulação', ylabel='Energia')
+        ax[1].set_xlim([0, 1280])
+        ax[1].set_ylim([0, 720])
+        ax[1].plot(self.physXD.traj_x, self.physXD.traj_y, label=f'Trajetória', color='red')
+        ax[1].set(ylabel='Posição')
         plt.show()

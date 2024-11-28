@@ -89,7 +89,8 @@ while game_running:
             has_drawn_game_win = False
             has_pumped_level = False
             engine.physXD.ecin.clear()
-            engine.physXD.epg.clear()
+            engine.physXD.traj_x.clear()
+            engine.physXD.traj_y.clear()
             engine.physXD.discrete_sim_line.clear()
             engine.physXD.qtt_loops = 0
             current_game_state = engine.initial_speed_calculate()
@@ -122,6 +123,9 @@ while game_running:
             if option_clicked != None:
                 if option_clicked == GameState.PLOT:
                     engine.plot_energies()
+
+                    for i in range (0, 500000):
+                        pygame.event.pump()
                 else:
                     current_game_state = option_clicked
                 
@@ -176,6 +180,9 @@ while game_running:
             if option_clicked != None:
                 if option_clicked == GameState.PLOT:
                     engine.plot_energies()
+
+                    for i in range (0, 500000):
+                        pygame.event.pump()
                 else:
                     current_game_state = option_clicked
 

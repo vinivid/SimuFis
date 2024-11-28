@@ -9,9 +9,12 @@ class PhysXD:
     planets = list[list[Planet, int]]()
     rect_objs = list[RectObstacle]()
 
-    #Lista que salva a energia potencial gravitacional do corpo
-    epg = list[numpy.floating]()
+    #Lista que salva a energia cinética
     ecin = list[numpy.floating]()
+
+    #Lista que guarda os pontos da trajetória
+    traj_x = list[numpy.floating]()
+    traj_y = list[numpy.floating]()
 
     #Quantiddade de vezes que fora calculado as velocidades e uma linha discreta deles
     qtt_loops = int(0)
@@ -75,9 +78,6 @@ class PhysXD:
             acumulate_forces[1] += y_projection
         
         #segunda lei de newton
-        if planet[1] == 0:
-            self.epg.append(epg_val)
-
         return acumulate_forces/planet[0].body.mass, False
 
     #O que esta escrito abaixo vem do método de integrar de Verlet
@@ -111,6 +111,10 @@ class PhysXD:
         
         #Adiciona a energia cínetica do planeta principal 
         self.ecin.append((numpy.linalg.norm(self.planets[0][0].body.vel)**2 * self.planets[0][0].body.mass)/2)
+
+        #Adiciona o ponto da trajetória
+        self.traj_x.append((self.planets[0][0].body.pos[0])/10**3)
+        self.traj_y.append( 720 - ((self.planets[0][0].body.pos[1])/10**3) )
 
         self.discrete_sim_line.append(self.qtt_loops)
         self.qtt_loops += 1
