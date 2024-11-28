@@ -262,8 +262,11 @@ class GameEngine:
     
     def plot_energies(self) -> None:
         fig, ax = plt.subplots(1, 2, figsize=(14, 6))
-        ax[0].plot(self.physXD.discrete_sim_line, self.physXD.ecin, label=f'Energia cinética')
+        ax[0].plot(self.physXD.discrete_sim_line, self.physXD.ecin, color='blue', label='Energia cinética')
+        ax[0].plot(self.physXD.discrete_sim_line, self.physXD.epg, color='green', label='Energia potencial gravitacional')
         ax[0].set(xlabel='Frame da simulação', ylabel='Energia')
+        ax[0].legend()
+
         ax[1].set_xlim([0, 1280])
         ax[1].set_ylim([0, 720])
         ax[1].plot(self.physXD.traj_x, self.physXD.traj_y, label=f'Trajetória', color='red')

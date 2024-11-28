@@ -12,6 +12,9 @@ class PhysXD:
     #Lista que salva a energia cinética
     ecin = list[numpy.floating]()
 
+    #lista que contem a energia potencial gravitacional do sistema
+    epg = list[numpy.floating]()
+
     #Lista que guarda os pontos da trajetória
     traj_x = list[numpy.floating]()
     traj_y = list[numpy.floating]()
@@ -77,6 +80,10 @@ class PhysXD:
             acumulate_forces[0] += x_projection
             acumulate_forces[1] += y_projection
         
+        #coloca a energia potencial gravitacional do sistema
+        if planet[1] == 0:
+            self.epg.append(epg_val)
+
         #segunda lei de newton
         return acumulate_forces/planet[0].body.mass, False
 

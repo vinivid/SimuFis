@@ -91,6 +91,7 @@ while game_running:
             engine.physXD.ecin.clear()
             engine.physXD.traj_x.clear()
             engine.physXD.traj_y.clear()
+            engine.physXD.epg.clear()
             engine.physXD.discrete_sim_line.clear()
             engine.physXD.qtt_loops = 0
             current_game_state = engine.initial_speed_calculate()
