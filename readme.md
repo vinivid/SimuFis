@@ -1,16 +1,19 @@
-## Descrição do projeto
+# Descrição do projeto
 
 Este projeto foi criado para simular o comportamento da força gravitacional sob um corpo em movimento. O objetivo deste projeto é desenvolver nos jogadores uma noção intuitiva do modelo físico de gravitação universal através de uma experiência lúdica. Para vencer, o jogador deve fazer um lançamento oblíquo da bola vermelha para que ela atinja o retângulo verde, levando em conta as forças gravitacionais advindas de corpos adjacentes. Após cada lançamento, pode-se visualizar um gráfico da variação da energia potencial gravitacional e cinética ao longo do decorrer da simulação, sedimentando a habilidade de ler e interpretar as informações de um sistema físico.
 
-## Implementação
+# Implementação
 
 O jogo foi desenvolvido em Python 3 com o auxílio dos pacotes pygame, numppy, scipy e matplotlib para o desenvolvimento do projeto. Estas bibliotecas serviram para a criação da interface gráfica, portabilidade, obtenção e gerenciamento dos comandos do usuário, colisão entre objetos e também para o cálculo das interações entre objetos do jogo.
 
-###Conceitos de Física e modelo matemático
+#Conceitos de Física e modelo matemático
 ## Gravitação Universal
 
-    A lei da gravitação universal diz respeito a força mútua entre dois corpos e é voltada ao centro de massa do sistema; ela é proporcional a massa dos corpos e inversamente proporcional a distância entre eles. Essa lei é muito útil para o cálculo da órbita de planetas e trajetórias sujeitas à força gravitacional como a de um foguete ou, no nosso caso, uma bolinha vermelha. Graças a essa lei, podemos desenvolver a seguinte equação para a força central gravitacional: 
-    \begin{equation} \vec{F_g} = -G \times \frac{Mm}{d^2}\hat{r} \end{equation} onde G é a constante de gravitação, que vale $6,67\times10^{-11} N.m^2/kg^2$, $d$ a distância entre os corpos, $M$ e $m$ a massa do maior e menor corpo respectivamente e $\hat{r}$ o versor radial centrado no corpo produtor da força.
+A lei da gravitação universal diz respeito a força mútua entre dois corpos e é voltada ao centro de massa do sistema; ela é proporcional a massa dos corpos e inversamente proporcional a distância entre eles. Essa lei é muito útil para o cálculo da órbita de planetas e trajetórias sujeitas à força gravitacional como a de um foguete ou, no nosso caso, uma bolinha vermelha. Graças a essa lei, podemos desenvolver a seguinte equação para a força central gravitacional: 
+
+$ \vec{F_g} = -G \times \frac{Mm}{d^2}\hat{r} $ 
+
+onde $G$ é a constante de gravitação, que vale $6,67\times10^{-11} N.m^2/kg^2$, $d$ a distância entre os corpos, $M$ e $m$ a massa do maior e menor corpo respectivamente e $\hat{r}$ o versor radial centrado no corpo produtor da força.
 
 ## Lançamento Oblíquo
 
@@ -22,10 +25,10 @@ sabemos que a equação cinemática é a seguinte: \begin{equation} x(t) = x_0 +
     v(t + \Delta t) = v(t) + \frac{1}{2}(a(t) + a(t + \Delta t))\Delta t
 \end{equation}
 
-## Instalação dos pacotes}
+# Instalação dos pacotes}
 Primeiramente garanta que o computador possua python 3.10+. Depois, instale os seguintes módulos pelo terminal de comando usando pip install nome do modulo pygame, numpy, scipy, matplotlib.
 
-## Execução e jogabilidade
+# Execução e jogabilidade
 
 Para rodar o jogo, execute o seguinte comando dentro da diretória do jogo: "py main.py". Para jogar arraste o mouse da bola para a direção desejada; quanto maior a distância do mouse para a bola vermelha, maior a magnitude do vetor velocidade aplicado sobre ela.
 
