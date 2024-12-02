@@ -1,19 +1,14 @@
-\documentclass{article}
-\usepackage{graphicx} % Required for inserting images
-
-\begin{document}
-
-\section{Descrição do projeto}
+## Descrição do projeto
 Este projeto foi criado para simular o comportamento da força gravitacional sob um corpo em movimento. O objetivo deste projeto é desenvolver nos jogadores uma noção intuitiva do modelo físico de gravitação universal através de uma experiência lúdica. Para vencer, o jogador deve fazer um lançamento oblíquo da bola vermelha para que ela atinja o retângulo verde, levando em conta as forças gravitacionais advindas de corpos adjacentes. Após cada lançamento, pode-se visualizar um gráfico da variação da energia potencial gravitacional e cinética ao longo do decorrer da simulação, sedimentando a habilidade de ler e interpretar as informações de um sistema físico.
-\section{Implementação}
+##Implementação
 O jogo foi desenvolvido em Python 3 com o auxílio dos pacotes pygame, numppy, scipy e matplotlib para o desenvolvimento do projeto. Estas bibliotecas serviram para a criação da interface gráfica, portabilidade, obtenção e gerenciamento dos comandos do usuário, colisão entre objetos e também para o cálculo das interações entre objetos do jogo.
-\section{Conceitos de Física e modelo matemático}
-\subsection{Gravitação Universal}
+###Conceitos de Física e modelo matemático
+##Gravitação Universal
 
     A lei da gravitação universal diz respeito a força mútua entre dois corpos e é voltada ao centro de massa do sistema; ela é proporcional a massa dos corpos e inversamente proporcional a distância entre eles. Essa lei é muito útil para o cálculo da órbita de planetas e trajetórias sujeitas à força gravitacional como a de um foguete ou, no nosso caso, uma bolinha vermelha. Graças a essa lei, podemos desenvolver a seguinte equação para a força central gravitacional: 
     \begin{equation} \vec{F_g} = -G \times \frac{Mm}{d^2}\hat{r} \end{equation} onde G é a constante de gravitação, que vale $6,67\times10^{-11} N.m^2/kg^2$, $d$ a distância entre os corpos, $M$ e $m$ a massa do maior e menor corpo respectivamente e $\hat{r}$ o versor radial centrado no corpo produtor da força.
 
-\subsection{Lançamento Oblíquo}
+##Lançamento Oblíquo
 
     O lançamento oblíquo é o arremesso diagonal de um objeto em um sistema conservativo sob efeito da força gravitacional, por exemplo a trajetória simplificada de uma flecha ou a simulação de uma bolinha vermelha tentando atinjir um retângulo verde. Seja o arremeso um ganho instantâneo de velocidade e $N$ o número de corpos próximos a nossa bolinha vermelha, podemos representar as forças atuantes nesse sistema da seguinte maneira: \begin{equation} \vec{F} = \sum_{k=1}^{n}{-G  \frac{M_km}{d_k^2}}\hat{r_k}\end{equation} onde $M_k$ é a massa do K-ésimo planeta, $d_k$ a distância do planeta à bola e $\hat{r_k}$ o vetor radial centrado no K-ésimo planeta.
     Podemos produzir uma aproximação eficiente deste sistema utilizando da integração stormer-velet.
@@ -22,11 +17,9 @@ sabemos que a equação cinemática é a seguinte: \begin{equation} x(t) = x_0 +
 \end{equation} a função velocidade pode ser encontrada manipulando algebricamente a função posição, obtendo-se o seguinte: \begin{equation}
     v(t + \Delta t) = v(t) + \frac{1}{2}(a(t) + a(t + \Delta t))\Delta t
 \end{equation}
-\section{como instalar}
-\subsection{Instalação dos pacotes}
+##Instalação dos pacotes}
 Primeiramente garanta que o computador possua python 3.10+. Depois, instale os seguintes módulos pelo terminal de comando usando pip install nome do modulo pygame, numpy, scipy, matplotlib.
-\subsection{Execução e jogabilidade}
+##Execução e jogabilidade
 Para rodar o jogo, execute o seguinte comando dentro da diretória do jogo: "py main.py". Para jogar arraste o mouse da bola para a direção desejada; quanto maior a distância do mouse para a bola vermelha, maior a magnitude do vetor velocidade aplicado sobre ela.
-\section{Autores}
+##Autores
 Este jogo foi desenvolvido por Vinicius Freitas, Rodrigo Almeida, João Mello, Glauco Fleury e João Dias.
-\end{document}
