@@ -217,6 +217,12 @@ class GameEngine:
         else:
             return None
         
+    def check_ff_button(self) -> bool:
+        rectangle_dimensions = (100, 50)
+        button_pos = (10, 650)
+
+        return self.__check_rect_click(button_pos, rectangle_dimensions)
+    
     # Calcula a velocidade incial do planeta principal com base na posição do mouse
     def initial_speed_calculate(self):
         released = False
@@ -264,11 +270,13 @@ class GameEngine:
         fig, ax = plt.subplots(1, 2, figsize=(14, 6))
         ax[0].plot(self.physXD.discrete_sim_line, self.physXD.ecin, color='blue', label='Energia cinética')
         ax[0].plot(self.physXD.discrete_sim_line, self.physXD.epg, color='green', label='Energia potencial gravitacional')
+        ax[0].set_title('Energias')
         ax[0].set(xlabel='Frame da simulação', ylabel='Energia')
         ax[0].legend()
 
         ax[1].set_xlim([0, 1280])
         ax[1].set_ylim([0, 720])
+        ax[1].set_title('Trajetória')
         ax[1].plot(self.physXD.traj_x, self.physXD.traj_y, label=f'Trajetória', color='red')
-        ax[1].set(ylabel='Posição')
+        ax[1].set(xlabel='X', ylabel='Y')
         plt.show()

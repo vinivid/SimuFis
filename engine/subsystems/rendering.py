@@ -72,7 +72,7 @@ class Renderer:
 
         game_over_continue_text, _ = self.font.render('Continuar', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_over_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
-        game_over_plot, _ = self.font.render('Plotar Energia', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_over_plot, _ = self.font.render('Plotar Gráficos', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_over_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_over_text, _ = self.font.render('Game Over', fgcolor=[255,255,255], bgcolor=None, rotation=0, size=120)
 
@@ -101,7 +101,7 @@ class Renderer:
         game_win_continue_text, _ = self.font.render('Próximo', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_retry_text, _ = self.font.render('Tentar Novamente', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
-        game_win_plot_text, _ = self.font.render('Plotar Energia', fgcolor=None, bgcolor=None, rotation=0, size=60)
+        game_win_plot_text, _ = self.font.render('Plotar Gráficos', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_exit_text, _ = self.font.render('Sair', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_win_text, _ = self.font.render('Vitória', fgcolor=[255, 255, 255], bgcolor=None, rotation=0, size=120)
 
@@ -127,7 +127,7 @@ class Renderer:
         self.game_win_surface.blit(game_win_main_menu_text, (main_menu_button[0] + 70, main_menu_button[1] + 15))
         self.game_win_surface.blit(game_win_exit_text, (exit_button[0] + 200, exit_button[1] + 15))
 
-    def __create_level_select_surface(self):
+    def __create_level_select_surface(self) -> None:
         self.level_select_surface.fill([0, 0, 0])
 
         level_1, _ = self.font.render('1', fgcolor=None, bgcolor=None, rotation=0, size=120)
@@ -159,6 +159,30 @@ class Renderer:
         self.level_select_surface.blit(level_4, (button_4[0] + 65, 265))
         self.level_select_surface.blit(level_5, (button_5[0] + 65, 265))
 
+    def __create_credits_surface(self) -> None:
+        self.credits_surface.fill([0, 0, 0])
+
+        credit_1, _ = self.font.render('Glauco Fleury', fgcolor=[255, 255, 255], bgcolor=None, rotation=0, size=120)
+        credit_2, _ = self.font.render('João Dias', fgcolor=[255, 255, 255], bgcolor=None, rotation=0, size=120)
+        credit_3, _ = self.font.render('João Mello', fgcolor=[255, 255, 255], bgcolor=None, rotation=0, size=120) 
+        credit_4, _ = self.font.render('Rodrigo Almeida', fgcolor=[255, 255, 255], bgcolor=None, rotation=0, size=120)
+        credit_5, _ = self.font.render('Vinícius Freitas', fgcolor=[255, 255, 255], bgcolor=None, rotation=0, size=120)
+
+        #COloca a imagem na tela de créditos
+        background_image = pygame.image.load('./engine/textures/space_credits.jpg')
+        self.credits_surface.blit(background_image, (0, 0))
+
+        first_name_pos = (330, 100)
+        vertical_ofsset = 120
+
+        self.credits_surface.blit(credit_1, (first_name_pos[0], first_name_pos[1]))
+        self.credits_surface.blit(credit_2, (first_name_pos[0], first_name_pos[1] + vertical_ofsset))
+        self.credits_surface.blit(credit_3, (first_name_pos[0], first_name_pos[1] + 2*vertical_ofsset))
+        self.credits_surface.blit(credit_4, (first_name_pos[0], first_name_pos[1] + 3*vertical_ofsset))
+        self.credits_surface.blit(credit_5, (first_name_pos[0], first_name_pos[1] + 4*vertical_ofsset))
+
+        self.credits_surface.blit(self.ff_button, (10, 650))
+
     def __init__(self, screen_heigth : int, screen_width : int,
                  ) -> None:
         
@@ -176,6 +200,12 @@ class Renderer:
 
         self.level_select_surface = pygame.Surface((1280, 720))
         self.__create_level_select_surface()
+
+        self.ff_button = pygame.Surface((100, 50))
+        self.ff_button.fill([255, 0, 0])
+
+        self.credits_surface = pygame.Surface((1280, 720))
+        self.__create_credits_surface()
     
     #Desenha uma flecha com base numa posição inicial e a direção q ela vai apontar
     #A direção q é o direction vector tem de ser um vetor de norma 1
@@ -254,6 +284,9 @@ class Renderer:
         #Incrementa a quantidade de loops de renderização feitos e muda o buffer de renderização
         self.__draw_accel_vector()
         #self.draw_main_planet_stats()
+
+        self.screen.blit(self.ff_button, (10, 650))
+
         self.qtt_loops += 1
 
     def __draw_rec_obj(self) -> None:
@@ -271,3 +304,6 @@ class Renderer:
 
     def draw_level_screen(self) -> None:
         self.screen.blit(self.level_select_surface, (0, 0))
+    
+    def draw_credits(self) -> None:
+        self.screen.blit(self.credits_surface, (0, 0))

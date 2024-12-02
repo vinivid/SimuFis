@@ -69,7 +69,7 @@ rect2 = RectObstacle(100, 100, [450, 300], LOSE_RECTANGLE, [255, 0, 0, 110])
 engine.add_rect_obstacle(rect1)
 engine.add_rect_obstacle(rect2)
 
-engine.to_level(3)
+engine.to_level(1)
 #////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 game_running = True
@@ -84,6 +84,7 @@ has_drawn_game_win = False
 has_drawn_level_select = False
 has_pumped = False
 has_pumped_level = False
+has_draw_credits = False
 
 while game_running:
     for event in pygame.event.get():
@@ -97,6 +98,7 @@ while game_running:
             has_drawn_game_over = False
             has_drawn_game_win = False
             has_drawn_level_select = False
+            has_draw_credits = False
             #É necessario dar pump para tirar o problema de cliclar instantaneamente
 
             if not has_drawn_main_menu:
@@ -131,6 +133,8 @@ while game_running:
             has_drawn_main_menu = False
             has_drawn_game_win = False
             has_pumped_level = False
+            has_draw_credits = False
+
             engine.physXD.ecin.clear()
             engine.physXD.traj_x.clear()
             engine.physXD.traj_y.clear()
@@ -146,8 +150,13 @@ while game_running:
             has_drawn_main_menu = False
             has_drawn_game_win = False
             has_pumped_level = False
+            has_draw_credits = False
+
             simulation_event = engine.physXD.update()
             engine.render_sistem.draw_simulation()
+
+            if engine.check_ff_button():
+                current_game_state = GameState.GAME_OVER
 
             if simulation_event != None:
                 current_game_state = simulation_event
@@ -161,6 +170,7 @@ while game_running:
             has_drawn_level_select = False
             has_drawn_main_menu = False
             has_drawn_game_win = False
+            has_draw_credits = False
 
             option_clicked = engine.check_game_over_click()
 
@@ -186,6 +196,7 @@ while game_running:
             has_drawn_main_menu = False
             has_drawn_game_win = False
             has_drawn_game_over = False
+            has_draw_credits = False
 
             if not has_drawn_level_select:
                 engine.render_sistem.draw_level_screen()
@@ -213,6 +224,7 @@ while game_running:
             has_drawn_game_over = False
             has_drawn_main_menu = False
             has_pumped_level = False
+            has_draw_credits = False
 
             option_clicked = engine.check_game_win_click()
             
@@ -239,8 +251,22 @@ while game_running:
 
                 elif current_game_state == GameState.LEVEL_SELECT:
                     current_game_state = GameState.START
-                    
             
+        case GameState.CREDITS:
+            has_pumped = False
+            has_drawn_level_select = False
+            has_drawn_game_over = False
+            has_drawn_main_menu = False
+            has_pumped_level = False
+
+            if not has_draw_credits:
+                engine.render_sistem.draw_credits()
+                has_draw_credits = True
+                pygame.display.flip()
+
+            if engine.check_ff_button():
+                current_game_state = GameState.MAIN_MENU            
+
         case _:
             print(f"{{'\033[0;31m'}}ERROR::INVALID GAME STATE")
 
