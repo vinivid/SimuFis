@@ -10,7 +10,50 @@ LOSE_RECTANGLE = 0
 
 engine = GameEngine()
 
-#////////////////// INICIANDO A LEVEL 4 ///////////////////////
+#Como criar níveis:
+#COLOCAR CONSTANTES DE VELOCIDADE E RAIO NO JOGAR DO PLANETA
+#Para se mudar as constantes de jogar os planetas é necessario mudar 
+#o trhow_velocity_constant e o throw_radius_constant ambas pertencentes a engine
+#O trhow_velocity_constant é a constante multiplicativa de jogar o planeta quando o
+#player solta o mouse.
+#O throw_radius_constant é a constante que determina o raio do player jogar o planeta
+#A velocidade na qual o planeta sera jogado depende de ambas essas constantes.
+#Exemplo de como coloca-las abaixo:
+#
+#engine.throw_velocity_constant = 400
+#engine.throw_radius_constant = 100
+#
+#COLOCAR PLANETAS
+#Você instancia os planeatas que deseja colocar criando um objeto de planeta
+#Por exemplo:
+#
+# planet1 = Planet(9*10**19, [100, 350], [0, 0], [0, 0], 10, [255,255,255,255])
+# engine.add_planet(planet1)
+#
+#tera esse planeta no nível que você deseja fazer.
+#O primeiro planeta adicionado sera considerado o planeta do jogador, tenha isso em mente.
+#
+#COLOCAR OS RETANGULOS
+#Análogo ao colocar um planeta. Exemplo abaixo:
+#
+# rect1 = RectObstacle(200, 200, [1000, 250], WIN_RECTANGLE, [0, 255, 0, 50])
+# engine.add_rect_obstacle(rect1)
+#
+#SOBERE O TO LEVEL !!IMPORTANTE!!
+# a função engine.to_level(numero_do_nivel_a_ser_criado) transforma o q fora adicionado em nível
+# ela deve ser chamada após adicionar todos os objetos que deseja colocar no nível
+# Exemplo: para criar o nível três após colocar os objetos é necessario apenas colcoar
+# 
+# engine.to_level(3)
+# 
+# criar outros níves após isso não dara certo.
+# 
+# CUIDADO PARA NÃO SOBRE ESCREVER O NÍVEL DOS OUTROS, CASO ISSO OCORRA MUDE PARA O QUE ESTAVA ANTERIORMENTE
+# ANTES DE PUSHAR
+# A area abaixo delimitada por //// é a necessaria para se criar um nível, não é necessario escrever
+# nada além dela assim como n é necessario colocar mais de um to_level() (se vc fizer isso vai bugar)
+# ////////////////////////////////////////////////////////////////////////////////////////////////////
+
 engine.throw_velocity_constant = 400
 engine.throw_radius_constant = 100
 
@@ -26,28 +69,8 @@ rect2 = RectObstacle(100, 100, [450, 300], LOSE_RECTANGLE, [255, 0, 0, 110])
 engine.add_rect_obstacle(rect1)
 engine.add_rect_obstacle(rect2)
 
-engine.to_level(4)
-#///////////////// FIM DA LEVEL 4 /////////////////////////////
-
-engine.throw_velocity_constant = 500
-engine.throw_radius_constant = 100
-#O primeiro planeta vai ser tratado como principal e ele sempre sera o planeta com id/index 0
-#planet1 = Planet(80, [400, 500], [0, 0], [0, 0], 5.0, [255, 0, 0, 255])
-#planet2 = Planet(8*10**20, [600, 400], [0, 0], [0, 0], 5.0, [0, 0, 255, 255])
-planet3 = Planet(8*10**19, [1000, 600], [0, 0], [0, 0], 10, [255,255,255,255])
-planet4 = Planet(8*10**21, [800, 300], [0, 0], [0, 0], 4, [125, 30, 80, 255])
-#engine.add_planet(planet1)
-#engine.add_planet(planet2)
-engine.add_planet(planet3)
-engine.add_planet(planet4)
-rect1 = RectObstacle(200, 300, [500, 100], WIN_RECTANGLE, [0, 255, 0, 50])
-rect2 = RectObstacle(100, 100, [100, 400], LOSE_RECTANGLE, [255, 0, 0, 110])
-engine.add_rect_obstacle(rect1)
-engine.add_rect_obstacle(rect2)
-
-engine.to_level(5)
-#engine.load_level()
-#É o relogio q controla o FPS do jogo
+engine.to_level(3)
+#////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 game_running = True
 current_game_state = GameState.MAIN_MENU
