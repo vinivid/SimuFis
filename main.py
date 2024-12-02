@@ -9,6 +9,26 @@ WIN_RECTANGLE = 1
 LOSE_RECTANGLE = 0
 
 engine = GameEngine()
+
+#////////////////// INICIANDO A LEVEL 4 ///////////////////////
+engine.throw_velocity_constant = 400
+engine.throw_radius_constant = 100
+
+planet1 = Planet(9*10**19, [100, 350], [0, 0], [0, 0], 10, [255,255,255,255])
+planet2 = Planet(4*10**21, [500, 350], [0, 0], [0, 0], 4, [125, 30, 80, 255])
+
+engine.add_planet(planet1)
+engine.add_planet(planet2)
+
+rect1 = RectObstacle(200, 200, [1000, 250], WIN_RECTANGLE, [0, 255, 0, 50])
+rect2 = RectObstacle(100, 100, [450, 300], LOSE_RECTANGLE, [255, 0, 0, 110])
+
+engine.add_rect_obstacle(rect1)
+engine.add_rect_obstacle(rect2)
+
+engine.to_level(4)
+#///////////////// FIM DA LEVEL 4 /////////////////////////////
+
 engine.throw_velocity_constant = 500
 engine.throw_radius_constant = 100
 #O primeiro planeta vai ser tratado como principal e ele sempre sera o planeta com id/index 0
