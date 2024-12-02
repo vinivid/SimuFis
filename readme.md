@@ -6,7 +6,8 @@ Este projeto foi criado para simular o comportamento da força gravitacional sob
 
 O jogo foi desenvolvido em Python 3 com o auxílio dos pacotes pygame, numppy, scipy e matplotlib para o desenvolvimento do projeto. Estas bibliotecas serviram para a criação da interface gráfica, portabilidade, obtenção e gerenciamento dos comandos do usuário, colisão entre objetos e também para o cálculo das interações entre objetos do jogo.
 
-#Conceitos de Física e modelo matemático
+# Conceitos de Física e modelo matemático
+
 ## Gravitação Universal
 
 A lei da gravitação universal diz respeito a força mútua entre dois corpos e é voltada ao centro de massa do sistema; ela é proporcional a massa dos corpos e inversamente proporcional a distância entre eles. Essa lei é muito útil para o cálculo da órbita de planetas e trajetórias sujeitas à força gravitacional como a de um foguete ou, no nosso caso, uma bolinha vermelha. Graças a essa lei, podemos desenvolver a seguinte equação para a força central gravitacional: 
