@@ -27,11 +27,11 @@ onde $M_k$ é a massa do K-ésimo planeta, $d_k$ a distância do planeta à bola
 Podemos produzir uma aproximação eficiente deste sistema utilizando da integração stormer-velet.
 sabemos que a equação cinemática é a seguinte: 
 
-$ x(t) = x_0 + v_0t + \frac{1}{2}at^2 + \frac{1}{6}bt^3 + ...$ 
+$x(t) = x_0 + v_0t + \frac{1}{2}at^2 + \frac{1}{6}bt^3 + ...$ 
 
 É possível aproximar o próximo valor $t + \Delta t$ da seguinte maneira;
 
-$ x(t + \Delta t) = x(t) + v(t)\Delta t + \frac{1}{2}a(t)\Delta t^2 + \frac{1}{6}b(t)\Delta t^3 + O(t^4) $ 
+$x(t + \Delta t) = x(t) + v(t)\Delta t + \frac{1}{2}a(t)\Delta t^2 + \frac{1}{6}b(t)\Delta t^3 + O(t^4)$ 
 
 Simplificando temos 
 $ x(t + \Delta t) = x(t) + v(t)\Delta t + \frac{1}{2}a(t)\Delta t^2 + O(t^3)$ 
@@ -42,7 +42,7 @@ $a(t + \Delta t) = f(x(t + \Delta t)) \quad, f(x) = \sum_{k=1}^{n}{G \times \fra
 
 A função velocidade pode ser encontrada manipulando algebricamente a função posição, obtendo-se o seguinte: 
 
-$ v(t + \Delta t) = v(t) + \frac{1}{2}(a(t) + a(t + \Delta t))\Delta t$
+$v(t + \Delta t) = v(t) + \frac{1}{2}(a(t) + a(t + \Delta t))\Delta t$
 
 # Como instalar
 
