@@ -54,24 +54,26 @@ engine = GameEngine()
 # nada além dela assim como n é necessario colocar mais de um to_level() (se vc fizer isso vai bugar)
 # ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-engine.throw_velocity_constant = 3500
+engine.throw_velocity_constant = 200
 engine.throw_radius_constant = 120
 
-planet1 = Planet(1, [400, 600], [0, 0], [0, 0], 5, [43, 67, 88, 255])
-planet2 = Planet(10**24, [0, 0], [0, 0], [0, 0], 500, [211, 129, 21, 255])
+planet1 = Planet(1, [30, 360], [0, 0], [0, 0], 5, [43, 67, 88, 255])
+planet2 = Planet(1e22, [400, 360], [0, -2e4], [0, 0], 20, [211, 129, 21, 255])
+planet3 = Planet(1e22, [800, 360], [0, 2e4], [0, 0], 20, [211, 129, 21, 255])
 #planet3 = Planet(100, [600, 350], [0, 100000], [0, 0], 2, [211, 211, 211, 255])
 
 engine.add_planet(planet1)
 engine.add_planet(planet2)
+engine.add_planet(planet3)
 #engine.add_planet(planet3)
 
-rect1 = RectObstacle(80, 80, [900, 0], WIN_RECTANGLE, [0, 255, 0, 50])
-rect2 = RectObstacle(500, 50, [600, 360], LOSE_RECTANGLE, [255, 0, 0, 80])
+rect1 = RectObstacle(300, 50, [450, 0], WIN_RECTANGLE, [0, 255, 0, 50])
+#rect2 = RectObstacle(500, 50, [600, 360], LOSE_RECTANGLE, [255, 0, 0, 80])
 
 engine.add_rect_obstacle(rect1)
-engine.add_rect_obstacle(rect2)
+#engine.add_rect_obstacle(rect2)
 
-engine.to_level(5)
+engine.to_level(2)
 #////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 game_running = True
