@@ -6,6 +6,12 @@ Este projeto foi criado para simular o comportamento da força gravitacional sob
 
 O jogo foi desenvolvido em Python 3 com o auxílio dos pacotes pygame, numppy, scipy e matplotlib para o desenvolvimento do projeto. Estas bibliotecas serviram para a criação da interface gráfica, portabilidade, obtenção e gerenciamento dos comandos do usuário, colisão entre objetos e também para o cálculo das interações entre objetos do jogo.
 
+A forma na qual a simulçao dos conceitos física fora implementada pode ser encontrada na [implementação da engine de física](./engine/subsystems/phys_xd.py) e a implementação dos gráficos pode ser encotrada na [implementação da engine de gráficos](./engine/subsystems/rendering.py).
+
+O funcionamento do jogo como um todo, o qual utiliza de todos os aspectos relacionados a física e a rendereização é descrito pela seguinte maquina de estados:
+
+<img src='./imgs/maquina_jogo.png'>
+
 # Conceitos de Física e modelo matemático
 
 ## Gravitação Universal
