@@ -36,7 +36,7 @@ class Renderer:
     def __create_main_menu_surface(self) -> None:
         self.main_menu_surface.fill([0, 0, 0])
 
-        main_menu_title, _ = self.font.render('JooJplaneta', fgcolor=[255, 255, 255, 255], bgcolor=None, rotation=0, size=100)
+        main_menu_title, _ = self.font.render('Voliasteri', fgcolor=[255, 255, 255, 255], bgcolor=None, rotation=0, size=100)
         main_menu_start, _ = self.font.render('Começar', fgcolor=None, bgcolor=None, rotation=0, size=40)
         main_menu_levels, _ = self.font.render('Níveis', fgcolor=None, bgcolor=None, rotation=0, size=40)
         main_menu_credits, _ = self.font.render('Créditos', fgcolor=None, bgcolor=None, rotation=0, size=40)
