@@ -1,5 +1,5 @@
 # Descrição do projeto
-
+$$$$
 Este projeto foi criado para simular o comportamento da força gravitacional sob um corpo em movimento. O objetivo deste projeto é desenvolver nos jogadores uma noção intuitiva do modelo físico de gravitação universal através de uma experiência lúdica. Para vencer, o jogador deve fazer um lançamento oblíquo da bola vermelha para que ela atinja o retângulo verde, levando em conta as forças gravitacionais advindas de corpos adjacentes. Após cada lançamento, pode-se visualizar um gráfico da variação da energia potencial gravitacional e cinética ao longo do decorrer da simulação, sedimentando a habilidade de ler e interpretar as informações de um sistema físico.
 
 # Implementação
