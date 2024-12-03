@@ -12,7 +12,7 @@ O jogo foi desenvolvido em Python 3 com o auxílio dos pacotes pygame, numppy, s
 
 A lei da gravitação universal diz respeito a força mútua entre dois corpos e é voltada ao centro de massa do sistema; ela é proporcional a massa dos corpos e inversamente proporcional a distância entre eles. Essa lei é muito útil para o cálculo da órbita de planetas e trajetórias sujeitas à força gravitacional como a de um foguete ou, no nosso caso, uma bolinha vermelha. Graças a essa lei, podemos desenvolver a seguinte equação para a força central gravitacional: 
 
-$ \vec{F_g} = -G \times \frac{Mm}{d^2}\hat{r} $ 
+$\vec{F_g} = -G \times \frac{Mm}{d^2}\hat{r}$ 
 
 onde $G$ é a constante de gravitação, que vale $6,67\times10^{-11} N.m^2/kg^2$, $d$ a distância entre os corpos, $M$ e $m$ a massa do maior e menor corpo respectivamente e $\hat{r}$ o versor radial centrado no corpo produtor da força.
 
@@ -20,7 +20,7 @@ onde $G$ é a constante de gravitação, que vale $6,67\times10^{-11} N.m^2/kg^2
 
 O lançamento oblíquo é o arremesso diagonal de um objeto em um sistema conservativo sob efeito da força gravitacional, por exemplo a trajetória simplificada de uma flecha ou a simulação de uma bolinha vermelha tentando atinjir um retângulo verde. Seja o arremeso um ganho instantâneo de velocidade e $N$ o número de corpos próximos a nossa bolinha vermelha, podemos representar as forças atuantes nesse sistema da seguinte maneira:
  
-$\vec{F} = \sum_{k=1}^{n}{-G  \frac{M_km}{d_k^2}}\hat{r_k}$ 
+$\vec{F} = \sum_{k=1}^{n}{-G  \frac{M_km}{d_k^2}} \hat{r_k}$ 
  
 onde $M_k$ é a massa do K-ésimo planeta, $d_k$ a distância do planeta à bola e $\hat{r_k}$ o vetor radial centrado no K-ésimo planeta.
 
