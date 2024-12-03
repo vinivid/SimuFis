@@ -60,7 +60,7 @@ class Renderer:
         self.__draw_pill(self.main_menu_surface, [255, 0, 0], exit_button, rectagle_dimensions)
 
         #Desenha o texto na superfíce do titulo prícipal
-        self.main_menu_surface.blit(main_menu_title, (370, 100))
+        self.main_menu_surface.blit(main_menu_title, (430, 100))
         self.main_menu_surface.blit(main_menu_start, (start_button[0] + 85, start_button[1] + 20))
         self.main_menu_surface.blit(main_menu_levels, (levels_button[0] + 105, levels_button[1] + 20))
         self.main_menu_surface.blit(main_menu_credits, (credits_button[0] + 85, credits_button[1] + 20))
