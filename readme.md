@@ -38,7 +38,7 @@ $x(t + \Delta t) = x(t) + v(t)\Delta t + \frac{1}{2}a(t)\Delta t^2 + O(t^3)$
 
 Visto isso podemos encontrar a aceleração da seguinte maneira: 
 
-$a(t + \Delta t) = f(x(t + \Delta t)) \quad, f(x) = \sum_{k=1}^{n}{G \times \frac{M_k}{d_k^2}}$ 
+$a(t + \Delta t) = f(x(t + \Delta t)) \quad, f(x) = ||\sum_{k=1}^{n}{G \times \frac{M_k}{d_k^2}}\hat{r}||$ 
 
 A função velocidade pode ser encontrada manipulando algebricamente a função posição, obtendo-se o seguinte: 
 
