@@ -1,14 +1,14 @@
 # Descrição do projeto
 
-Este projeto foi criado para simular o comportamento da força gravitacional sob um corpo em movimento. O objetivo deste projeto é desenvolver nos jogadores uma noção intuitiva do modelo físico de gravitação universal através de uma experiência lúdica. Para vencer, o jogador deve fazer um lançamento oblíquo da bola vermelha para que ela atinja o retângulo verde, levando em conta as forças gravitacionais advindas de corpos adjacentes. Após cada lançamento, pode-se visualizar um gráfico da variação da energia potencial gravitacional e cinética ao longo do decorrer da simulação, sedimentando a habilidade de ler e interpretar as informações de um sistema físico.
+Este projeto foi criado para simular o comportamento da força gravitacional sob um corpo em movimento. O objetivo deste projeto é desenvolver nos jogadores uma noção intuitiva do modelo físico de gravitação universal e suas propriedades (tal qual leis de Kepler, por exemplo) através de uma experiência lúdica. Para vencer, o jogador deve fazer um lançamento oblíquo da bola vermelha para que ela atinja o retângulo verde, levando em conta as forças gravitacionais advindas de corpos adjacentes. Após cada lançamento, pode-se visualizar um gráfico da variação da energia potencial gravitacional e cinética ao longo do decorrer da simulação, sedimentando a habilidade de ler e interpretar as informações de um sistema físico. 
 
 # Implementação
 
-O jogo foi desenvolvido em Python 3 com o auxílio dos pacotes pygame, numppy, scipy e matplotlib para o desenvolvimento do projeto. Estas bibliotecas serviram para a criação da interface gráfica, portabilidade, obtenção e gerenciamento dos comandos do usuário, colisão entre objetos e também para o cálculo das interações entre objetos do jogo.
+O jogo foi desenvolvido em Python 3 com o auxílio dos pacotes pygame, numpy, scipy e matplotlib para o desenvolvimento do projeto. Estas bibliotecas serviram para a criação da interface gráfica, portabilidade, obtenção e gerenciamento dos comandos do usuário, colisão entre objetos e também para o cálculo das interações entre objetos do jogo.
 
-A forma na qual a simulçao dos conceitos física fora implementada pode ser encontrada na [implementação da engine de física](./engine/subsystems/phys_xd.py) e a implementação dos gráficos pode ser encotrada na [implementação da engine de gráficos](./engine/subsystems/rendering.py).
+A forma na qual a simulação dos conceitos físicos fora implementada pode ser encontrada na [implementação da engine de física](./engine/subsystems/phys_xd.py) e a implementação dos gráficos pode ser encotrada na [implementação da engine de gráficos](./engine/subsystems/rendering.py).
 
-O funcionamento do jogo como um todo, o qual utiliza de todos os aspectos relacionados a física e a rendereização é descrito pela seguinte maquina de estados:
+O funcionamento do jogo como um todo, o qual utiliza de todos os aspectos relacionados a física e a renderização é descrito pela seguinte máquina de estados:
 
 <img src='./imgs/maquina_jogo.png'>
 
@@ -16,17 +16,17 @@ O funcionamento do jogo como um todo, o qual utiliza de todos os aspectos relaci
 
 ## Gravitação Universal
 
-A lei da gravitação universal diz respeito a força mútua entre dois corpos e é voltada ao centro de massa do sistema; ela é proporcional a massa dos corpos e inversamente proporcional a distância entre eles. Essa lei é muito útil para o cálculo da órbita de planetas e trajetórias sujeitas à força gravitacional como a de um foguete ou, no nosso caso, uma bolinha vermelha. Graças a essa lei, podemos desenvolver a seguinte equação para a força central gravitacional: 
+A lei da gravitação universal diz respeito à força mútua entre dois corpos e é voltada ao centro de massa do sistema; ela é proporcional à massa dos corpos e inversamente proporcional à distância entre eles. Essa lei é muito útil para o cálculo da órbita de planetas e trajetórias sujeitas à força gravitacional como a de um foguete ou, no nosso caso, uma bolinha vermelha. Graças a essa lei, podemos desenvolver a seguinte equação para a força central gravitacional: 
 
 $\vec{F_g} = -G \times \frac{Mm}{d^2}\hat{r}$ 
 
-onde $G$ é a constante de gravitação, que vale $6,67\times10^{-11} N.m^2/kg^2$, $d$ a distância entre os corpos, $M$ e $m$ a massa do maior e menor corpo respectivamente e $\hat{r}$ o versor radial centrado no corpo produtor da força.
+onde $G$ é a constante de gravitação, que vale $6,67\times10^{-11} N.m^2/kg^2$, $d$ a distância entre os corpos, $M$ e $m$ a massa do maior e menor corpo respectivamente e $\hat{r}$ o versor radial centrado no centro de massa do corpo sobre o qual a força atua.
 
 ## Lançamento Oblíquo
 
-O lançamento oblíquo é o arremesso diagonal de um objeto em um sistema conservativo sob efeito da força gravitacional, por exemplo a trajetória simplificada de uma flecha ou a simulação de uma bolinha vermelha tentando atinjir um retângulo verde. Seja o arremeso um ganho instantâneo de velocidade e $N$ o número de corpos próximos a nossa bolinha vermelha, podemos representar as forças atuantes nesse sistema da seguinte maneira:
+O lançamento oblíquo é o arremesso diagonal de um objeto em um sistema conservativo sob efeito da força gravitacional, por exemplo a trajetória simplificada de uma flecha ou a simulação de uma bolinha vermelha tentando atinjir um retângulo verde. Seja o arremesso um ganho instantâneo de velocidade e $N$ o número de corpos próximos a nossa bolinha vermelha, podemos representar as forças atuantes nesse sistema da seguinte maneira:
  
-$\vec{F} = \sum_{k=1}^{n} -G\frac{M_km}{d_k^2}\hat{r_k}­$ 
+$\vec{F} = \sum_{k=1}^{n} -G\frac{M_km}{d_k^2}\hat{r_k}­$   
  
 onde $M_k$ é a massa do K-ésimo planeta, $d_k$ a distância do planeta à bola e $\hat{r_k}$ o vetor radial centrado no K-ésimo planeta.
 
@@ -62,3 +62,10 @@ Para rodar o jogo, execute o seguinte comando dentro da diretória do jogo: "py 
 ## Autores
 
 Este jogo foi desenvolvido por Vinicius Freitas, Rodrigo Almeida, João Mello, Glauco Fleury e João Dias.
+
+## Referências 
+
+-Conceitos sobre gravitação, movimento oblíquo, e dinâmica (forças e aceleração): pdf's do professor-doutor Esmerindo de Souza Bernardes (email oficial = souza@ifsc.usp.br);
+
+-método Velocity-Verlet: VERLET Integration · Arcane Algorithm Archive. Disponível em: https://www.algorithm-archive.org/contents/verlet_integration/verlet_integration.html. 
+
