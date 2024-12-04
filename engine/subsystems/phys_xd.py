@@ -34,6 +34,9 @@ class PhysXD:
         
         return None
     
+    #Essa função privada checa se o planeta principal ultrapassou uma das bordas da tela.
+    #
+    #Ela retorna o estado de game over caso uma a 
     def __border_pass(self) -> GameState | None:
         if self.planets[0][0].body.pos[0]/10**3 < 0 or self.planets[0][0].body.pos[0]/10**3 > 1280:
             return GameState.GAME_OVER
@@ -87,12 +90,9 @@ class PhysXD:
         #segunda lei de newton
         return acumulate_forces/planet[0].body.mass, False
 
-    #O que esta escrito abaixo vem do método de integrar de Verlet
-    #O metódo de Stormer-Verlet para calcular velocidades é um método adequado para esse projeto por ele ser o Thanos das tecnicas de integrar a velocidade
-    #O que mais importa pra nós é q ele é facilmente implementavel, rapido, e numericamente estavel. É em essência o unico metódo sano q descreve nósso sistema
-    #Agora as razões matematicas do pq ele é bom são as seguintes: Ele tem revesiabilidade no tempo (ok) e preserva a forma sympletica no espaço das fases (O quwe isso significa 
-    # na nossa simulação é que ele não fode com a energia do sistema, matematicamente isso tem relação com manifolds e outras coisas q eu n tenho conhecimento)
-    #Ele simplesmente é melhor que o metodo de euler de integração em todos os aspectos (outros como RK4 não mantém a enegia do sistema o q fode coisas relacionadas a campos), lógo usar ele
+    # O velocity verlet é o algoritimo de resolução de EDO'S númerico utilizado para resolver as EDO relacionadas a simulação.
+    # O velocity verlet advem do método para resolver integrais do Stormer Verlet. Ele funciona a partir da aproximação da velocidade
+    #de forma que não se tenha uma grande perda de energia
     def __velocity_verlet(self
                           ) -> None | GameState:
 

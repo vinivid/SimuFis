@@ -54,30 +54,34 @@ engine = GameEngine()
 # nada além dela assim como n é necessario colocar mais de um to_level() (se vc fizer isso vai bugar)
 # ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-engine.throw_velocity_constant = 53
-engine.throw_radius_constant = 131
+engine.throw_velocity_constant = 500
+engine.throw_radius_constant = 100
 
-planet1 = Planet(2000000, [100 , 320], [0, 0], [0, 0], 10.512, [225, 100, 100, 255]) #rosa
-planet2 = Planet(5.32*10**18, [320, 220], [500, 2500], [0, 0], 17, [28, 182, 59, 255]) #verde
-planet3 = Planet(5.32*10**19, [640, 360], [0, 0], [0, 0], 20, [58, 24, 86, 255]) #roxo
-planet4 = Planet(5.32*10**15, [700, 500], [-3400, 500], [0, 0], 10, [225, 165, 0, 255]) #laranja
-planet5 = Planet(10*10**16, [700, 600], [3000, -4000], [0, 0], 15, [250, 230, 100, 255]) #amarelo
+planet1 = Planet(1, [640 , 650], [0, 0], [0, 0], 10, [225, 100, 100, 255]) 
+planet2 = Planet(5 * 10 ** 21, [890, 220], [500, 2500], [0, 0], 17, [28, 182, 59, 255]) 
+planet3 = Planet(5 * 10 ** 19, [720, 120], [1000, 50000], [0, 0], 15, [58, 24, 86, 255])
+planet5 = Planet(5 * 10 ** 21, [300, 220], [0, 0], [0, 0], 20, [128, 27, 37, 255])
+planet6 = Planet(30, [250, 220], [0, 100000], [0, 0], 5, [50, 175, 50, 255])
+planet7 = Planet(30, [400, 320], [-2000, 50000], [0, 0], 5, [50, 175, 50, 255])
+planet8 = Planet(30, [400, 150], [200, 45000], [0,0], 5, [50, 175, 50, 255])
 
 engine.add_planet(planet1)
 engine.add_planet(planet2)
 engine.add_planet(planet3)
-engine.add_planet(planet4)
 engine.add_planet(planet5)
+engine.add_planet(planet6)
+engine.add_planet(planet7)
+engine.add_planet(planet8)
 
-rect1 = RectObstacle(320, 348, [648, 700], WIN_RECTANGLE, [0, 255, 0, 50])
-rect2 = RectObstacle(400, 100, [81, 532], LOSE_RECTANGLE, [255, 0, 0, 80])
-#rect3 = RectObstacle(649, 192, [348, 0], LOSE_RECTANGLE, [255, 0, 0, 80])
+rect1 = RectObstacle(30, 70, [0, 180], WIN_RECTANGLE, [0, 255, 0, 50])
+rect2 = RectObstacle(30, 450, [640, 0], LOSE_RECTANGLE, [255, 0, 0, 80])
+rect4 = RectObstacle(30, 70, [1250, 350], WIN_RECTANGLE, [0, 255, 0, 80])
 
 engine.add_rect_obstacle(rect1)
 engine.add_rect_obstacle(rect2)
-#engine.add_rect_obstacle(rect3)
+engine.add_rect_obstacle(rect4)
 
-engine.to_level(3)
+engine.to_level(2)
 #////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 game_running = True
@@ -280,6 +284,6 @@ while game_running:
 
     clock.tick(1000)
     #Se vc quiserer q ele printe of FPS descomente a linha seguinte
-    #print(clock.get_fps())
+    print(clock.get_fps())
 
 pygame.quit()
