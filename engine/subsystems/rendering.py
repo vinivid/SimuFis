@@ -32,10 +32,16 @@ class Renderer:
         pygame.gfxdraw.filled_circle(surface, button_position[0], button_position[1] + side_circle_radius, side_circle_radius, color)
         pygame.gfxdraw.filled_circle(surface, button_position[0] + dimensions[0], button_position[1] + side_circle_radius, side_circle_radius, color)
 
+    """
+    As telas de menu principal e similares (vitória, derrota, níveis..) serão todas efetuadas de maneira similar. Primeiro é criado uma superfície e logo em seguida
+    são definidos os texto que aparecerão, bem como suas dimensões e rotação. Para a criação de botões desenhamos um retângulo e dois circulos nas suas extremidades
+    para ficar no formato desejado. Por último, é selecionada a posição dos textos e são desenhado esses mexmos textos que já foram definidos.
+    """
+
     #Função que desenha e crie a superfíce do menu prícipal
     def __create_main_menu_surface(self) -> None:
         self.main_menu_surface.fill([0, 0, 0])
-
+  
         main_menu_title, _ = self.font.render('Voliasteri', fgcolor=[255, 255, 255, 255], bgcolor=None, rotation=0, size=100)
         main_menu_start, _ = self.font.render('Começar', fgcolor=None, bgcolor=None, rotation=0, size=40)
         main_menu_levels, _ = self.font.render('Níveis', fgcolor=None, bgcolor=None, rotation=0, size=40)
@@ -66,10 +72,10 @@ class Renderer:
         self.main_menu_surface.blit(main_menu_credits, (credits_button[0] + 85, credits_button[1] + 20))
         self.main_menu_surface.blit(main_menu_exit, (exit_button[0] + 125, exit_button[1] + 20))
 
-    #Cria a superfice em que esta desenhada a tela de game over
+    #Cria a superfice em que esta desenhada a tela de game over 
     def __create_game_over_surface(self) -> None:
         self.game_over_surface.fill([0, 0, 0])
-
+  
         game_over_continue_text, _ = self.font.render('Continuar', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_over_main_menu_text, _ = self.font.render('Menu Principal', fgcolor=None, bgcolor=None, rotation=0, size=60)
         game_over_plot, _ = self.font.render('Plotar Gráficos', fgcolor=None, bgcolor=None, rotation=0, size=60)
@@ -95,6 +101,7 @@ class Renderer:
         self.game_over_surface.blit(game_over_plot, (plot_button[0] + 10, plot_button[1] + 20))
         self.game_over_surface.blit(game_over_exit_text, (exit_button[0] + 140, exit_button[1] + 20))
 
+    #Cria a superfice em que esta desenhada a tela de vitória 
     def __create_game_win_surface(self) -> None:
         self.game_win_surface.fill([0, 0, 0])
 
@@ -127,6 +134,7 @@ class Renderer:
         self.game_win_surface.blit(game_win_main_menu_text, (main_menu_button[0] + 70, main_menu_button[1] + 15))
         self.game_win_surface.blit(game_win_exit_text, (exit_button[0] + 200, exit_button[1] + 15))
 
+    #Cria a superfice em que esta desenhada a tela de seleção de nível
     def __create_level_select_surface(self) -> None:
         self.level_select_surface.fill([0, 0, 0])
 
@@ -159,6 +167,7 @@ class Renderer:
         self.level_select_surface.blit(level_4, (button_4[0] + 65, 265))
         self.level_select_surface.blit(level_5, (button_5[0] + 65, 265))
 
+    #Cria a superfice em que esta desenhada a tela de créditos
     def __create_credits_surface(self) -> None:
         self.credits_surface.fill([0, 0, 0])
 
@@ -183,6 +192,7 @@ class Renderer:
 
         self.credits_surface.blit(self.ff_button, (10, 650))
 
+    #Função que inicia os objetos da classe que utilizamos
     def __init__(self, screen_heigth : int, screen_width : int,
                  ) -> None:
         
