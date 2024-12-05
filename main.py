@@ -284,6 +284,6 @@ while game_running:
 
     clock.tick(1000)
     #Se vc quiserer q ele printe of FPS descomente a linha seguinte
-    print(clock.get_fps())
+    #print(clock.get_fps())
 
 pygame.quit()
