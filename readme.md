@@ -49,21 +49,21 @@ Portanto é possível fazer uma aproximação cujo é necessario saber apenas da
 
 A partir disso, o método de Verlet utiliza da posição atual e anterior para aproximar esta equação com a seguinte relação:
 
-$x_{n-1} + x_{n + 1} = 2x_n + a_n(\deta)^{2} + O[(\deta t)^4] $
+$x_{n-1} + x_{n + 1} = 2x_n + a_n(\Delta)^{2} + O[(\Delta t)^4] $
 
 A partir subtração da série de taylor para $x_{n + 1}$ e $x_{n - 1}$ obtemos o verlet para posições:
 
-$v_n = \frac{x_{n + 1} - x_{n - 1}}{2\delta t}$
+$v_n = \frac{x_{n + 1} - x_{n - 1}}{2 \Delta t}$
 
 Que tem um erro de terceira ordem para a posição e de segunda ordem para a velocidade.
 
 Entretanto, a implementação do método de Verlet requer que a posição anterior do corpo seja salava. Para evitar isso foi utilizado do Velocity Verlet que é uma equação matematícamente equivalente ao método de verlet. A relação deste método é dada a seguir:
 
-$x_{n + 1} = x_n + v_{n}\delta t + \frac{1}{2}a_{n}(\delta t)^{2}$
+$x_{n + 1} = x_n + v_{n}\Delta t + \frac{1}{2}a_{n}(\Delta t)^{2}$
 
 (Abaixo é o verlet para a velocidade)
 
-$v_{n + 1} = v_{n} + \frac{1}{2}(a_{n + 1})\delta t$
+$v_{n + 1} = v_{n} + \frac{1}{2}(a_{n + 1})\Delta t$
 
 Em que $a_{n + 1}$ é caculado para um corpo de massa $m$ da seguinte, utilizando a segunda lei de newton:
 
