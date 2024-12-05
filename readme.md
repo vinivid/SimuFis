@@ -16,7 +16,7 @@ O funcionamento do jogo como um todo, o qual utiliza de todos os aspectos relaci
 
 ## Gravitação Universal
 
-A lei da gravitação universal diz respeito à força mútua entre dois corpos e é voltada ao centro de massa do sistema; ela é proporcional à massa dos corpos e inversamente proporcional à distância entre eles. Essa lei é muito útil para o cálculo da órbita de planetas e trajetórias sujeitas à força gravitacional como a de um foguete ou, no nosso caso, uma bolinha vermelha. Graças a essa lei, podemos desenvolver a seguinte equação para a força central gravitacional: 
+A lei da gravitação universal diz respeito à força mútua entre dois corpos e é voltada ao centro de massa do sistema; ela é proporcional à massa dos corpos e inversamente proporcional à distância entre eles. Essa lei é muito útil para o cálculo da órbita de planetas e trajetórias sujeitas à força gravitacional como a de um foguete ou, no nosso caso, um asteróide vermelha. Graças a essa lei, podemos desenvolver a seguinte equação para a força central gravitacional: 
 
 $\vec{F_g} = -G \times \frac{Mm}{d^2}\hat{r}$ 
 
@@ -24,31 +24,52 @@ onde $G$ é a constante de gravitação, que vale $6,67\times10^{-11} N.m^2/kg^2
 
 ## Lançamento Oblíquo
 
-O lançamento oblíquo é o arremesso diagonal de um objeto em um sistema conservativo sob efeito da força gravitacional, por exemplo a trajetória simplificada de uma flecha ou a simulação de uma bolinha vermelha tentando atinjir um retângulo verde. Seja o arremesso um ganho instantâneo de velocidade e $N$ o número de corpos próximos a nossa bolinha vermelha, podemos representar as forças atuantes nesse sistema da seguinte maneira:
+O lançamento oblíquo é o arremesso diagonal de um objeto em um sistema conservativo sob efeito da força gravitacional, por exemplo a trajetória simplificada de uma flecha ou a simulação de um asteróide tentando atinjir um retângulo verde. Seja o arremesso um ganho instantâneo de velocidade $\vec{v}$ e $N$ o número de corpos próximos a nossa bolinha vermelha, podemos representar as forças atuantes nesse sistema da seguinte maneira:
  
 $\vec{F} = \sum_{k=1}^{n} -G\frac{M_km}{d_k^2}\hat{r_k}­$   
  
 onde $M_k$ é a massa do K-ésimo planeta, $d_k$ a distância do planeta à bola e $\hat{r_k}$ o vetor radial centrado no K-ésimo planeta.
 
-Podemos produzir uma aproximação eficiente deste sistema utilizando da integração stormer-velet.
-sabemos que a equação cinemática é a seguinte: 
+Aplicando esta relação para todos os planetas presentes no sístema obtem-se a relação que descreve a aceleração para todos os planetas.
+
+Podemos produzir uma aproximação eficiente deste sistema utilizando o método de intergração de verlet.
+Sabemos que a equação cinemática para um corpo em um sistema de forças é da seguinte forma:
 
 $x(t) = x_0 + v_0t + \frac{1}{2}at^2 + \frac{1}{6}bt^3 + ...$ 
 
-É possível aproximar o próximo valor $t + \Delta t$ da seguinte maneira;
+É possível aproximar o próximo valor $x$ em $t + \Delta t$ da seguinte maneira, fazendo a expansão de taylor:
 
 $x(t + \Delta t) = x(t) + v(t)\Delta t + \frac{1}{2}a(t)\Delta t^2 + \frac{1}{6}b(t)\Delta t^3 + O(t^4)$ 
 
-Simplificando temos 
+Como, para a nossa simulação, não sera calculado o "jerk", a equação pode ser simplificada para:
+
 $x(t + \Delta t) = x(t) + v(t)\Delta t + \frac{1}{2}a(t)\Delta t^2 + O(t^3)$ 
 
-Visto isso podemos encontrar a aceleração da seguinte maneira: 
+Portanto é possível fazer uma aproximação cujo é necessario saber apenas das funções da velocidade e posição.
 
-$a(t + \Delta t) = f(x(t + \Delta t)) \quad, f(x) = ||\sum_{k=1}^{n}{G \times \frac{M_k}{d_k^2}}\hat{r}||$ 
+A partir disso, o método de Verlet utiliza da posição atual e anterior para aproximar esta equação com a seguinte relação:
 
-A função velocidade pode ser encontrada manipulando algebricamente a função posição, obtendo-se o seguinte: 
+$x_{n-1} + x_{n + 1} = 2x_n + a_n(\deta)^{2} + O[(\deta t)^4] $
 
-$v(t + \Delta t) = v(t) + \frac{1}{2}(a(t) + a(t + \Delta t))\Delta t$
+A partir subtração da série de taylor para $x_{n + 1}$ e $x_{n - 1}$ obtemos o verlet para posições:
+
+$v_n = \frac{x_{n + 1} - x_{n - 1}}{2\delta t}$
+
+Que tem um erro de terceira ordem para a posição e de segunda ordem para a velocidade.
+
+Entretanto, a implementação do método de Verlet requer que a posição anterior do corpo seja salava. Para evitar isso foi utilizado do Velocity Verlet que é uma equação matematícamente equivalente ao método de verlet. A relação deste método é dada a seguir:
+
+$x_{n + 1} = x_n + v_{n}\delta t + \frac{1}{2}a_{n}(\delta t)^{2}$
+
+(Abaixo é o verlet para a velocidade)
+
+$v_{n + 1} = v_{n} + \frac{1}{2}(a_{n + 1})\delta t$
+
+Em que $a_{n + 1}$ é caculado para um corpo de massa $m$ da seguinte, utilizando a segunda lei de newton:
+
+$a(t + \Delta t) = f(x(t + \Delta t)) \quad, f(x) = \sum_{k=1}^{n}{G \times \frac{M_k}{d_k^2}}\hat{r}$ 
+
+Com isso é aproximado a trajetória do movimento do asteroide jogado.
 
 # Como instalar
 
