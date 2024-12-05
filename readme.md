@@ -2,6 +2,10 @@
 
 Este projeto foi criado para simular o comportamento da força gravitacional sob um corpo em movimento. O objetivo deste projeto é desenvolver nos jogadores uma noção intuitiva do modelo físico de gravitação universal e suas propriedades (tal qual leis de Kepler, por exemplo) através de uma experiência lúdica. Para vencer, o jogador deve fazer um lançamento oblíquo da bola vermelha para que ela atinja o retângulo verde, levando em conta as forças gravitacionais advindas de corpos adjacentes. Após cada lançamento, pode-se visualizar um gráfico da variação da energia potencial gravitacional e cinética ao longo do decorrer da simulação, sedimentando a habilidade de ler e interpretar as informações de um sistema físico. 
 
+## Por que a noção intuitiva é importante?
+
+Todo modelo físico vem de uma pessoa curiosa com seu ambiente, tentando transformar suas observações e entendimentos em um sistema preciso e livre de ambiguidades. Porem tal precisão pode vir a custo do entendimento de um leitor desacostumado à literatura acadêmica. Visto isso, é muito mais aconselhável primeiro aclimatar tal leitor aos conceitos da física através de uma noção intuitiva dos tópicos abordados. A partir disso, o leitor poderá melhor entender a mentalidade do autor ao escrever o livro e a lógica por trás de seus argumentos e definições.
+
 # Implementação
 
 O jogo foi desenvolvido em Python 3 com o auxílio dos pacotes pygame, numpy, scipy e matplotlib para o desenvolvimento do projeto. Estas bibliotecas serviram para a criação da interface gráfica, portabilidade, obtenção e gerenciamento dos comandos do usuário, colisão entre objetos e também para o cálculo das interações entre objetos do jogo.
