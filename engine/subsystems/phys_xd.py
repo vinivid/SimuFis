@@ -34,9 +34,7 @@ class PhysXD:
         
         return None
     
-    #Essa função privada checa se o planeta principal ultrapassou uma das bordas da tela.
-    #
-    #Ela retorna o estado de game over caso uma a 
+    #Ela retorna o estado de game over caso o planeta saia da tela 
     def __border_pass(self) -> GameState | None:
         if self.planets[0][0].body.pos[0]/10**3 < 0 or self.planets[0][0].body.pos[0]/10**3 > 1280:
             return GameState.GAME_OVER
@@ -92,37 +90,53 @@ class PhysXD:
 
     # O velocity verlet é o algoritimo de resolução de EDO'S númerico utilizado para resolver as EDO relacionadas a simulação.
     # O velocity verlet advem do método para resolver integrais do Stormer Verlet. Ele funciona a partir da aproximação da velocidade
-    #de forma que não se tenha uma grande perda de energia
+    #com baixa complexidade computacional e alta precisão. A vantagem dele com relação ao metódo de verlet a partir da posição
+    #é de que não é necessario amarzenar o valor da posição prévia de forma que podemos calcular a projeção da mudança de direção 
+    #sem uso de memória extra ou complicações no código.
     def __velocity_verlet(self
                           ) -> None | GameState:
 
+        #Checa se teve alguma colisão com algum retangulo
         rect_check = self.__rect_colision_detect(self.planets[0])
+
+        #Checa se o planeta principal ultrapassou a tela
         border_check = self.__border_pass()
 
+        #Se teve alguma colisão com retangulo retorna o estado
         if rect_check != None:
             return rect_check
         
+        #Se ultrapassou a tela retorna o estado de game over
         if border_check != None:
             return border_check
 
+        # Ínicio do velocity verlet
         for planet in self.planets :
+            
+            #Atualiza a posição do planeta com base apenas na velocidade prévia dele
             planet[0].body.pos = planet[0].body.pos + planet[0].body.vel * self.dt + planet[0].body.accel * (self.dt**2 * 0.5)
+
             #O update forces também checa se teve colisão
             n_accel, had_colision = self.__update_force(planet)
 
+            #Se teve alguma colisão retorna o estado de game over
             if had_colision:
                 return GameState.GAME_OVER
             
+            #A equação equivalente do verlet de velocidade para o velet normal
             planet[0].body.vel = planet[0].body.vel + (planet[0].body.accel + n_accel) * (self.dt*0.5)
+
+            #Aceleração se torna a nova aceleração
             planet[0].body.accel = n_accel
         
         #Adiciona a energia cínetica do planeta principal 
         self.ecin.append((numpy.linalg.norm(self.planets[0][0].body.vel)**2 * self.planets[0][0].body.mass)/2)
 
-        #Adiciona o ponto da trajetória
+        #Adiciona o ponto da trajetória para que ele seja grafado depois
         self.traj_x.append((self.planets[0][0].body.pos[0])/10**3)
         self.traj_y.append( 720 - ((self.planets[0][0].body.pos[1])/10**3) )
 
+        #Adiciona mais um ponto na discretização da simulação
         self.discrete_sim_line.append(self.qtt_loops)
         self.qtt_loops += 1
 
