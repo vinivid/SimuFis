@@ -93,6 +93,8 @@ Este jogo foi desenvolvido por Vinicius Freitas, Rodrigo Almeida, João Mello, G
 -Conceitos sobre gravitação, movimento oblíquo, e dinâmica (forças e aceleração): pdf's do professor-doutor Esmerindo de Souza Bernardes (email oficial = sousa@ifsc.usp.br);
 
 -Método Velocity-Verlet: Velet method · University of Delaware - Computational Methods of Physics. Disponível em https://www.physics.udel.edu/~bnikolic/teaching/phys660/numerical_ode/node5.html .
+
 -Método Velocity-Verlet: VERLET Integration · Arcane Algorithm Archive. Disponível em: https://www.algorithm-archive.org/contents/verlet_integration/verlet_integration.html .
+
 -Método Velocity-Verlet: As bases da Dinâmica Molecular - 2 · UFPEL. Disponível em: https://wp.ufpel.edu.br/diehl/files/2018/09/SCEF_MD_aula2.pdf .
 
