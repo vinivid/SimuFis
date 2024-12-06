@@ -53,8 +53,27 @@ engine = GameEngine()
 # A area abaixo delimitada por //// é a necessaria para se criar um nível, não é necessario escrever
 # nada além dela assim como n é necessario colocar mais de um to_level() (se vc fizer isso vai bugar)
 # ////////////////////////////////////////////////////////////////////////////////////////////////////
+engine.throw_velocity_constant = 300
+engine.throw_radius_constant = 120
 
-engine.throw_velocity_constant = 500
+planet1 = Planet(1, [30, 360], [0, 0], [0, 0], 5, [43, 67, 88, 255])
+planet2 = Planet(1e21, [100, 360], [1e4, 0], [1e6, 0], 20, [211, 129, 21, 255])
+planet3 = Planet(1e21, [100+600, 500], [-2e4, 0], [-1e6, 0], 20, [211, 129, 21, 255])
+#planet3 = Planet(100, [600, 350], [0, 100000], [0, 0], 2, [211, 211, 211, 255])
+
+engine.add_planet(planet1)
+engine.add_planet(planet2)
+engine.add_planet(planet3)
+#engine.add_planet(planet3)
+
+rect1 = RectObstacle(20, 100, [0, 50], WIN_RECTANGLE, [0, 255, 0, 50])
+#rect2 = RectObstacle(500, 50, [600, 360], LOSE_RECTANGLE, [255, 0, 0, 80])
+
+engine.add_rect_obstacle(rect1)
+#engine.add_rect_obstacle(rect2)
+
+engine.to_level(6)
+'''engine.throw_velocity_constant = 500
 engine.throw_radius_constant = 100
 
 planet1 = Planet(1, [640 , 650], [0, 0], [0, 0], 10, [225, 100, 100, 255]) 
@@ -81,7 +100,7 @@ engine.add_rect_obstacle(rect1)
 engine.add_rect_obstacle(rect2)
 engine.add_rect_obstacle(rect4)
 
-engine.to_level(2)
+engine.to_level(2)'''
 #////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 game_running = True
