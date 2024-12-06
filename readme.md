@@ -4,7 +4,7 @@ Este projeto foi criado para simular o comportamento da força gravitacional sob
 
 ### Por que a noção intuitiva é importante?
 
-Todo modelo físico vem de uma pessoa curiosa com seu ambiente, tentando transformar suas observações e entendimentos em um sistema preciso e livre de ambiguidades. Porem tal precisão pode vir a custo do entendimento de um leitor desacostumado à literatura acadêmica. Visto isso, é muito mais aconselhável primeiro aclimatar tal leitor aos conceitos da física através de uma noção intuitiva dos tópicos abordados, como, no caso do projeto, a tulização de um jogo interativo. A partir disso, o leitor poderá melhor entender a mentalidade do autor ao escrever uma óbra acadêmica e a lógica por trás de seus argumentos e definições.
+Todo modelo físico vem de uma pessoa curiosa com seu ambiente, tentando transformar suas observações e entendimentos em um sistema preciso e livre de ambiguidades. Porem tal precisão pode vir a custo do entendimento de um leitor desacostumado à literatura acadêmica. Visto isso, é muito mais aconselhável primeiro aclimatar tal leitor aos conceitos da física através de uma noção intuitiva dos tópicos abordados, como, no caso do projeto, a utulização de um jogo interativo. A partir disso, o leitor poderá melhor entender a mentalidade do autor ao escrever uma obra acadêmica e a lógica por trás de seus argumentos e definições.
 
 # Implementação
 
